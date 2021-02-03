@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="css/discuss.css" />
+    <title>討論區</title>
+</head>
+
+
+<body>
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <main class="pub_back">
+        <div class="banner">
+            <div>
+                <h1>找茶討論</h1>
+            </div>
+        </div>
+        <h2 id="pub_new">發表新文章</h2>
+        <!-- 發表文章表格 -->
+        <form id="pub_article" action="./phps/pubArticle.php" method="post" enctype="multipart/form-data">
+            <div class="pub_input_container">
+                <label class="input_type upimg_text">文章圖片：</label>
+                <label id="preview_con" for="upimg"><img id="preview" src="./images/discuss/uploadimg.png"></label>
+                <input id="upimg" type="file" name="img" accept="image/gif,image/jpeg,image/png,image/jpg">
+            </div>
+            <div class="pub_input_container">
+                <label class="input_type">文章類別：</label>
+                <select class="slt" name="article_cate" v-model="type">
+                    　<option value="揪團心得">揪團心得</option>
+                    　<option value="茶園討論">茶園討論</option>
+                    　<option value="茶知識">茶知識</option>
+                </select>
+            </div>
+            <label class="input_type" maxlength="15">文章標題：</label>
+            <input type="text" name="title" v-model="title">
+            <div class="pub_input_container">
+                <label class="input_type">文章內文：</label>
+                <textarea class="article_input" name="content" maxlength="500" v-model="tex" @input="all"></textarea>
+                <div style="text-align: right;">剩餘字數：{{leftword}}</div>
+            </div>
+            <div class="btn_countainer">
+                <button class="btn">
+                    <a href="03_discuss.html">取消</a>
+                </button>
+                <button class="btnsub" type="button" @click="send_data()">
+                    送出
+                </button>
+            </div>
+            <!-- 發表完成確認燈箱 -->
+            <pub></pub>
+            <!-- 隱藏value 用來存篩選分類 -->
+            <input class="category" name="category" type="hidden" value="">
+        </form>
+
+    </main>
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+    <!-- vue  -->
+    <script src="./js/vue.js"></script>
+
+    <script>
+        Vue.component('pub', {
+            template: ` <div class="overlay" style="display: none;" >
+                            <div class="modal">
+                                <form method="post" >
+                                    <p class="welcome">發文成功！</p>
+                                    <button class="go" type="button" @click="go_discuss">確認</button>
+                                </form>
+                            </div>
+                         </div>`,
+            methods: {
+                go_discuss() {
+                    window.location.href = "./03_discuss.html";
+                },
+            },
+        });
+
+
+        var app = new Vue({
+            el: ".pub_back",
+            data: {
+                leftword: 500,
+                tex: "",
+                type: "",
+                title: "",
+
+            },
+            methods: {
+                all: function () {
+                    this.leftword = 500 - this.tex.length;
+                },
+
+                send_data() {
+                    var form = $('form')[0];
+                    // var formData = new FormData(form);
+                    var formData = new FormData();
+                    let file = document.getElementById('upimg').files[0]
+                    formData.append("title", this.title)
+                    formData.append("type", this.type)
+
+                    formData.append("text", this.tex)
+                    formData.append("file", file)
+
+
+
+                    $.ajax({
+                        url: './phps/pubArticle.php', // 要傳送的頁面
+                        method: 'POST',               // 使用 POST 方法傳送請求
+                        dataType: 'text',             // 回傳資料會是 json 格式
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        data: formData,  // 將表單資料用打包起來送出去
+                        success: function (res) {       // 成功以後會執行這個方法
+                            console.log('good');
+                            console.log(res);
+                            let lightbox = document.querySelectorAll('.overlay')[0];
+                            lightbox.style.display = '';
+                        },
+                        error: function (res) {
+                            console.log('not good');
+                            console.log(res);
+                            let lightbox = document.querySelectorAll('.overlay')[0];
+                            lightbox.style.display = '';
+                        },
+                    });
+                },
+            },
+            mounted() {
+                let upload = document.getElementById("upimg");
+                upload.addEventListener("change", hand, false);
+                function hand() {
+                    readURL(this);
+                }
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        let reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById("preview").src = e.target.result;
+                        };
+                        reader.readAsDataURL(input.files[0])
+                    }
+                }
+            },
+        });
+
+
+    </script>
+</body>
+
+</html>

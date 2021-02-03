@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+	<title>茶園排行</title>
+	<link rel="stylesheet" href="./css/vote.css">
+	<script src="https://unpkg.com/vue-star-rating@1.5.1/dist/star-rating.min.js"></script>
+	<link rel="stylesheet" href="./images/vote/awesome/css/all.css">
+	
+</head>
+
+<body>
+	<div id="leaves">
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+</div>
+<script>
+    let leaf = document.getElementById("leaves");
+    setTimeout(removeLeaf, 5000);
+    function removeLeaf() {
+        leaf.setAttribute("style", "display:none")
+    };
+</script>
+	<nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+	<div class="banner">
+		<p class="fir">茶園排行</p>
+	</div>
+
+	<main id="app" v-cloak>
+		<h2>熱門茶園 TOP10</h2>
+		<div v-for="gardenTop in gardenRowsTop" class="block1">
+			<div class="pic">
+				<img class="tea" :src="gardenTop.GARD_PIC">
+				<div class="m1"></div>
+			</div>
+			<div class="info">
+				<div class="s1">
+					<p class="p1">{{gardenTop.GARD_NAME}}</p>
+					<div class="fb-share-button" :data-href="'https://tibamef2e.com/ced101/project/g2/02_vote_more.html?GARD_ID='+gardenTop.GARD_ID" data-layout="button"
+                            data-size="small">
+                            <a target="_blank"
+                               style="background: #1483f5; color: white; padding: 2px 9px; border-radius: 5px; font-weight: bold; font-size: 17px;"
+                                :href="'https://www.facebook.com/sharer/sharer.php?u='+'https://tibamef2e.com/ced101/project/g2/02_vote_more.html?GARD_ID='+gardenTop.GARD_ID+'&amp;src=sdkpreparse'"
+                                class="fb-xfbml-parse-ignore fbi">
+                                分享
+                            </a>
+                    </div>
+				
+				</div>
+
+				<div class="allscore">
+					<span class="score">
+						總分:&ensp;
+					</span>
+					<div>
+						<star-rating :rating="gardenTop.GARD_AVG" :read-only="true" :increment="0.01" :star-size="25"></star-rating>
+					</div>
+				</div>
+
+				<p class="p3">
+					{{gardenTop.GARD_CONTENT}}
+				</p>
+
+				<div class="btwrap">
+					<button class="bt">
+						<a class="btn" :href="'02_vote_more.html?GARD_ID=' + gardenTop.GARD_ID">
+							More
+						</a>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 4 ~ 10 名排行區 -->
+
+		<table>
+
+			<tr v-for="(gardenEnd,index) in gardenRowsEnd">
+			<td>{{index+4}}</td>
+				<td>
+					<img class="chartpic" :src="gardenEnd.GARD_PIC">
+					<a class="title" :href="'02_vote_more.html?GARD_ID=' + gardenEnd.GARD_ID">{{gardenEnd.GARD_NAME}}</a>
+				</td>
+				<td>
+					<i class="fas fa-map-marker-alt"></i>&ensp;
+					{{gardenEnd.GARD_ADDRESS}}
+				</td>
+				<td class="resize">
+					<star-rating :rating="gardenEnd.GARD_AVG" :read-only="true" :increment="0.01" :star-size="25"></star-rating>
+				</td>
+				<td>
+						<a class="btn" :href="'02_vote_more.html?GARD_ID=' + gardenEnd.GARD_ID">
+							More
+						</a>
+				</td>
+			</tr>
+		</table>
+		<img class="deco" src="images/index/img-about-list-illust-front.png">
+
+	</main>
+
+	<footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+
+	<script src="./js/vue.js"></script>
+	<script>
+		
+
+		Vue.component("star-rating", VueStarRating.default, {
+			methods: {
+				// grade: function(rating){
+				// 	this.books[0].psn = rating;
+				// }
+			},
+			data: {
+				rating: "No Rating Selected",
+				currentRating: "No Rating",
+				currentSelectedRating: "No Current Rating",
+				boundRating: 3,
+			}
+		});
+
+		var app = new Vue({
+			el: "#app",
+			data:{
+				gardenRowsTop:[],
+				gardenRowsEnd:[]
+			},
+
+			methods: {
+				get_data(){
+					window.addEventListener("load", function (){
+						let gardenRows;
+						//============去server端拿資料
+						let xhr = new XMLHttpRequest();
+						xhr.onload = function(){  //step3
+							app.gardenRows = JSON.parse(xhr.responseText); 
+							app.gardenRowsTop = app.gardenRows.slice(0,3);
+							app.gardenRowsEnd = app.gardenRows.slice(3);
+							// console.log(app.gardenRows);
+							// console.log(app.gardenRowsEnd);
+						}
+						xhr.open("get","./phps/vote.php", true); //step1
+						xhr.send(null); //step2
+					});
+				}
+			},
+
+			mounted() {
+				this.get_data()
+			},
+		});
+
+		
+
+	</script>
+
+	<div id="fb-root"></div>
+	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v9.0" nonce="sJvAs018"></script>
+</body>
+
+</html>

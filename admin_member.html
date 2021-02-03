@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <title>偵茶者後台管理 | TEA SEARCHER | 帶你找茶 喝茶 買茶</title>
+        <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+        <link rel="stylesheet" href="./css/admin.css" />
+        <script src="js/admin.js"></script>
+    </head>
+    <body>
+        <nav class="nav">
+            <!-- logo放置區 -->
+            <a href="index.html">
+                <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+            </a>
+        </nav>
+
+        <aside class="aside">
+            <ul class="nav_list">
+                <a href="admin_tea.html"><h1>後台管理頁</h1></a>
+
+                <li class="li">
+                    <a href="#" data-target="admin"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />管理員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a class="active" href="#" data-target="member">
+                        <img class="navicon" src="images/common/nav_leaf.png" alt="" />會員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="tour"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />揪團活動管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="custom"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />客製化內容管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="shop"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />商城管理</a
+                    >
+                </li>
+
+                <li class="li">
+                    <a href="#" data-target="report"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />檢舉管理</a
+                    >
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main">
+            <div id="app">
+                <div class="tab_container -on member">
+                    <div class="tab_list_block">
+                        <ul class="tab_list">
+                            <li><a href="#" data-target="tab1" class="tab -on">瀏覽會員資料與停權</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab_contents">
+                        <div class="tab tab1 -on">
+                            <form>
+                                <input
+                                    onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+                                    type="text"
+                                    v-model="mem_id"
+                                    placeholder="請輸入會員帳號"
+                                />
+                                <button class="btn-confirm" type="button" @click="query_mem_id">送出查詢</button>
+                                <button class="btn-confirm" type="button" @click="get_mems">回到列表</button>
+                            </form>
+
+                            <table>
+                                <tr>
+                                    <th>會員編號</th>
+                                    <th>會員帳號</th>
+                                    <th>會員暱稱</th>
+                                    <th>會員密碼</th>
+                                    <th>會員信箱</th>
+                                    <th>最後投票日期</th>
+                                    <th>目前點數</th>
+                                    <th>會員狀態</th>
+                                    <th>修改確認</th>
+                                </tr>
+                                <tbody v-for="(item,key) in members">
+                                    <tr>
+                                        <td>{{item.MEM_NO}}</td>
+                                        <td>{{item.MEM_ID}}</td>
+                                        <td>{{item.MEM_NICNAME}}</td>
+                                        <!-- <td>{{item.MEM_PW}}</td> -->
+                                        <td>
+                                            <input
+                                                size="4"
+                                                type="password"
+                                                class="psw_input"
+                                                id=""
+                                                :value="item.MEM_PW"
+                                                readonly
+                                            />
+                                        </td>
+                                        <td>{{item.MEM_EMAIL}}</td>
+                                        <td>{{item.VOTE_DATE}}</td>
+                                        <td>{{item.GAME_POINT}}</td>
+                                        <!-- 沒有夾標籤但是需要顯示欄位內值的vue寫法 -->
+                                        <!-- <td><input type="text" :value="item.GAME_POINT" /></td> -->
+                                        <td>
+                                            <div class="form-group">
+                                                <label class="switch">
+                                                    <input type="checkbox" v-model="item.ischecked" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input
+                                                class="btn-delete"
+                                                type="button"
+                                                @click="edit_status(item.MEM_NO,key)"
+                                                value="確認修改"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 燈箱 -->
+                <lightbox v-if="lightbox_show" @close_lightbox="close_lightbox"> </lightbox>
+            </div>
+        </main>
+        <!-- footer -->
+        <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+        <script src="./js/vue.js"></script>
+        <script src="js/admin_member_vue.js"></script>
+    </body>
+</html>

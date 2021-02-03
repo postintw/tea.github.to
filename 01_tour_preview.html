@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/tour_preview.css" />
+    <link rel="stylesheet" href="./css/inser.css">
+
+    <title>建立揪團-預覽</title>
+</head>
+
+<body>
+
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <div class="banner">
+        <div>
+            <h1>建立揪團</h1>
+        </div>
+    </div>
+    <main id="preview">
+        <h1>預覽建立揪團</h1>
+
+        <div class="tourCreate_main">
+            <div class="preview_container">
+                <div class="preview_content">
+                    <div class="preview_left">
+                        <div class="preview_left_img">
+                            <img :src=img>
+                        </div>
+                    </div>
+                    <div class="preview_right">
+                        <div class="titleTour tour_title">
+                            {{tourName}}
+                        </div>
+
+                        <div class="titleTour tour_brief">
+                            <span>揪團簡介:</span><br>
+                            {{intro}}
+                        </div>
+                        <div class="titleTour tour_date">
+                            <span>出團日期:</span>{{activeDate}}
+                        </div>
+                        <div class="titleTour tour_attendency">
+                            <span>揪團人數:</span>{{people}}
+                        </div>
+                        <div class="titleTour tour_notes">
+                            <span>揪團備註:</span><br>
+                            {{introPs}}
+                        </div>
+
+                    </div>
+                    <div class="rightDownDate">
+                        <div class="titleTour today_date">
+                            <span>發起日期:</span>{{today}}
+                        </div>
+                        <div class="titleTour end_date">
+                            <span>截止日期:</span>{{deadDate}}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="garden_info_container">
+                    <div class="info_title">
+                        <h2>茶園簡介</h2>
+                    </div>
+                    <div class="info_content" v-for="location in locationRows"
+                        v-show="location.GARD_NAME== locationList">
+                        <div class="info_left"><img :src=location.GARD_PIC /></div>
+                        <div class="info_right">
+                            <div id="garden_title" class="content">{{location.GARD_NAME}}</div>
+                            <div class="titleTour garden_add">茶園地址:
+                                <span id="garden_add" class="content">{{location.GARD_ADDRESS}}</span>
+                            </div>
+
+                            <div class="titleTour garden_brift">茶園簡介:</div>
+                            <div id="garden_brift" class="content">{{location.GARD_CONTENT}}</div>
+                            <div class="titleTour garden_price">預估費用: <span id="garden_price" class="content">NT
+                                    {{location.GARD_PRICE}}</span></div>
+
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity_title">
+                            <h2>選擇行程</h2>
+                        </div>
+                        <div class="activity_content">
+                            <div class="local_block" v-for="rest in restRows" v-show="rest.RESTAURANT_NAME==restList1">
+                                <div class="local_img">
+                                    <img :src=rest.RESTAURANT_IMG alt="">
+                                    <span class="t3">餐廳</span>
+                                </div>
+                                <div class="local_text">
+                                    <h2>{{rest.RESTAURANT_NAME}}
+
+                                    </h2>
+                                    <p>{{rest.RESTAURANT_INFRO}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="local_block" v-for="rest in restRows" v-show="rest.RESTAURANT_NAME==restList2">
+                                <div class="local_img">
+                                    <img :src=rest.RESTAURANT_IMG alt="">
+                                    <span class="t3">餐廳</span>
+                                </div>
+                                <div class="local_text">
+                                    <h2>{{rest.RESTAURANT_NAME}}
+                                    </h2>
+                                    <p>{{rest.RESTAURANT_INFRO}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="local_block" v-for="rest in restRows" v-show="rest.RESTAURANT_NAME==restList3">
+                                <div class="local_img">
+                                    <img :src=rest.RESTAURANT_IMG alt="">
+                                    <span class="t3">餐廳</span>
+                                </div>
+                                <div class="local_text">
+                                    <h2>{{rest.RESTAURANT_NAME}}
+                                    </h2>
+                                    <p>{{rest.RESTAURANT_INFRO}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="local_block" v-for="hotel in hotelRows" v-show="hotel.HOTEL_NAME==hotelList">
+                                <div class="local_img">
+                                    <img :src=hotel.HOTEL_IMG alt="">
+                                    <span class="t2">住宿</span>
+                                </div>
+                                <div class="local_text">
+                                    <h2>{{hotel.HOTEL_NAME}}
+                                    </h2>
+                                    <p>{{hotel.HOTEL_INFRO}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="local_block" v-for="act in actRows" v-show="act.ACTIVE_NAME==activeList">
+                                <div class="local_img">
+                                    <img :src=act.ACTIVE_IMG alt="">
+                                    <span class="t4">活動</span>
+                                </div>
+                                <div class="local_text">
+                                    <h2>{{act.ACTIVE_NAME}}
+                                    </h2>
+                                    <p>{{act.ACTIVE_INFRO}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form id="formSubmit" action="./phps/tourInsert.php" method="post" enctype="multipart/form-data">
+                    <input hidden type="text" name="GARD_ID" v-model=gardId>
+                    <input hidden type="text" name="HOTEL_ID" v-model=hotelId>
+                    <input hidden type="text" name="TOUR_PEOPLE" v-model=people>
+                    <input hidden type="text" name="NUM_OF_PARTICIPANTS" v-model=nowPeople>
+                    <input hidden type="text" name="SETUP_DATE" v-model=today>
+                    <input hidden type="text" name="DEADLINE_DATE" v-model=deadDate>
+                    <input hidden type="text" name="TOUR_SETOFFTIME" v-model=activeDate>
+                    <input hidden type="text" name="TOUR_TITLE" v-model=tourName>
+                    <input hidden type="text" name="TOUR_INFRO" v-model=intro>
+                    <input hidden type="text" name="TOUR_PS" v-model=introPs>
+                    <input hidden type="text" name="TOUR_IMG" v-model=img>
+                    <input hidden type="text" name="TOUR_LEADER" v-model=leader>
+                    <input hidden type="text" name="TOUR_ACTIVE" v-model=activeList>
+                    <input hidden type="text" name="TOUR_STATUS" v-model=status>
+                    <input hidden type="text" name="RESTAURANT_ID1" v-model=restId1>
+                    <input hidden type="text" name="RESTAURANT_ID2" v-model=restId2>
+                    <input hidden type="text" name="RESTAURANT_ID3" v-model=restId3>
+                    <div class="btn"><button class="prev"><a href="./01_tourCreateInfro.html"> 上一步</a></button>
+                        <button type="submit" class="next"><a> 確認</a></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="successBox" v-show=successBox>
+            <a href="./01_tour.html">
+                <p>
+                    新增成功!!!
+                </p>
+                <p>點擊回揪團瀏覽頁查詢</p>
+                <div class="img">
+                    <img src="./images/tour/success.gif" alt="">
+                </div>
+            </a>
+        </div>
+    </main>
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/01_tour_preview.js"></script>
+</body>
+
+</html>

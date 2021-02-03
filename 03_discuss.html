@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="css/discuss.css" />
+    <title>找茶討論</title>
+</head>
+
+<body>
+    <div id="leaves">
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+</div>
+<script>
+    let leaf = document.getElementById("leaves");
+    setTimeout(removeLeaf, 5000);
+    function removeLeaf() {
+        leaf.setAttribute("style", "display:none")
+    };
+</script>
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <main id="are">
+        <div class="banner">
+            <div>
+                <h1>找茶討論</h1>
+            </div>
+        </div>
+        <button class="addtour" @click="pub">
+            <a>我要發文
+            </a>
+            <img class="dis_hand_pub" src="./images/discuss/hand_button.png" alt="">
+        </button>
+        <section id="articles">
+            <ul id="discuss_filter">
+                <li class="list fit cate all" data-filter="all">全部</li>
+                <li class="list cate tour" data-filter="tour">揪團心得</li>
+                <li class="list cate garden" data-filter="garden">茶園討論</li>
+                <li class="list cate leaf" data-filter="leaf">茶葉知識</li>
+            </ul>
+        </section>
+
+        <section id="discuss">
+            <div id="all_articles">
+                <!-- =====單篇文章開始===== -->
+                <div v-for="(artRow,i) in articlesRows[0]" class="article" :class="artRow.FILTER">
+                    <div class="ar_img">
+                        <img class="ar_rimg" :src="artRow.ART_IMG" alt="">
+                        <p class="ar_title">【{{artRow.CAT}}】{{artRow.ART_TITLE}}</p>
+                        <div class="art_memicon">
+                            <img class="memi memipeople" :src=" artRow.MEM_IMG " alt="">
+                            <span class="mem_name">{{artRow.MEM_NICNAME}}</span>
+                        </div>
+                    </div>
+                    <div class="ar_text">
+                        <div class="art_icons">
+                            <!-- 加入收藏愛心 -->
+                            <img class="memi addheart" title="add" :id=artRow.ART_NO src="./images/common/heart.png"
+                                alt="" @click="addheart(artRow.ART_NO)">
+                            <img class=" memi" src="./images/common/messenger.png" alt="">
+                            <span class="com_num">{{artRow.msg}}</span>
+                            <!-- 檢舉 -->
+                            <div class="excl" @click="showBox(artRow.ART_NO)">
+                                <img class="excl" v-if="artRow.MEM_NO!=memRows.MEM_NO"
+                                    src="./images/common/852019_exclamation_512x512.png" alt="">
+                            </div>
+                            <div class="fb-share-button"
+                                :data-href="'https://tibamef2e.com/ced101/project/g2/03_discuss_article.php?ART_NO='+ artRow.ART_NO"
+                                data-layout="button_count" data-size="small"><a target="_blank"
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftibamef2e.com%2Fced101%2Fproject%2Fg2%2F03_discuss_article.php%3FART_NO%3D51&amp;src=sdkpreparse"
+                                    class="fb-xfbml-parse-ignore">分享</a></div>
+                        </div>
+                        <div class="ar_innertext">
+                            <p>{{artRow.ART_CONTENT}}</p>
+                        </div>
+                        <div class="btncontainer"><button class="btn">
+                                <a :href="'03_discuss_article.php?ART_NO=' + artRow.ART_NO">More</a></button>
+                        </div>
+                        <div class="pub_time"><span>發表於{{artRow.ART_DATE}}</span></div>
+                    </div>
+                </div>
+                <!-- 檢舉燈箱 -->
+            </div>
+        </section>
+        <art-reg :artno="artno"></art-reg>
+    </main>
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+    <!-- vue  -->
+    <script src="./js/vue.js"></script>
+
+    <!-- 臉書分享 -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v9.0"
+        nonce="02xnpbCX"></script>
+
+
+
+    <script>
+
+
+        Vue.component('art-reg', {
+            props: ['artno'],
+            template: ` <div><div class="overlay" style="display: none;">
+                            <div class="modal">
+                                <form method="post" >
+                                    <div class="close" @click="closeBox()">
+                                        <img class="cancel" src="./images/vote/cancel.png">
+                                    </div>
+                                    <p class="welcome">請選取檢舉理由</p>
+                                    <div class="reason_container">
+                                        <input class="reason" type="radio" name="size" id="a" value="惡意中傷">
+                                        <label for="a">惡意中傷</label>
+                                    </div>
+                                    <div class="reason_container">
+                                        <input class="reason" type="radio" name="size" id="b" value="散布廣告">
+                                        <label for="b">散布廣告</label>
+                                    </div>
+                                    <div class="reason_container">
+                                        <input class="reason" type="radio" name="size" id="c" value="色情資訊">
+                                        <label for="c">色情資訊</label>
+                                    </div>
+                                    <div class="reason_container">
+                                        <input class="reason" type="radio" name="size" id="d" value="不雅字眼">
+                                        <label for="d">不雅字眼</label>
+                                    </div>
+                                    <button class="go" type="button" @click="send_data">送出</button>
+                                    <input type="hidden" name="art_reg" :value="artno">
+                                </form>
+                            </div>
+                         </div>
+                         <div class="overlay2 overlay" style="display: none;" >
+                            <div class="modal">
+                                <form method="post" >
+                                    <p class="welcome">檢舉成功！</p>
+                                    <button class="go" type="button" @click="close">確認</button>
+                                </form>
+                            </div>
+                         </div></div>
+                         `,
+            data() {
+                return {
+                    memRows: '',
+                }
+            },
+
+            methods: {
+                closeBox: function () {
+                    let lightbox = document.querySelectorAll('.overlay')[0];
+                    lightbox.style.display = 'none';
+                },
+                send_data() {
+                    if (app2.memRows.length == 0) {
+                        app2.lightbox = true;
+                    } else {
+                        $.ajax({
+                            url: './phps/articleReg.php', // 要傳送的頁面
+                            method: 'POST',               // 使用 POST 方法傳送請求
+                            dataType: 'text',             // 回傳資料會是 json 格式
+                            data: $('form').serialize(),  // 將表單資料用打包起來送出去
+                            success: function (res) {       // 成功以後會執行這個方法
+                                console.log('good');
+                                let lightbox = document.querySelectorAll('.overlay')[0];
+                                lightbox.style.display = 'none';
+                                let lightbox2 = document.querySelectorAll('.overlay2')[0];
+                                lightbox2.style.display = '';
+                            },
+                            error: function (res) {
+                                console.log('not good');
+                            },
+                        });
+                    }
+                },
+                close() {
+                    let lightbox2 = document.querySelectorAll('.overlay2')[0];
+                    lightbox2.style.display = 'none';
+                },
+            },
+        });
+
+
+
+        var app = new Vue({
+            el: "#are",
+            data: {
+                artno: "",
+                articlesRows: [],
+                memRows: '',
+            },
+
+            methods: {
+                // 加入收藏愛心
+                addheart(arno) {
+                    if (this.memRows.length == 0) {
+                        app2.lightbox = true;
+                    } else {
+                        if ($('#' + arno).attr('title') == "add") {
+                            $('#' + arno).attr('title', "noadd");
+                            $('#' + arno).attr('src', "./images/common/like.png");
+                            $.ajax({
+                                url: './phps/addArtFavorite.php', // 要傳送的頁面
+                                method: 'POST',
+                                dataType: 'text',             // 回傳資料
+                                data: { arno: arno },                 // 將表單資料用打包起來送出去
+                                success: function () {       // 成功以後會執行這個方法
+                                    console.log('good');
+                                },
+                                error: function () {
+                                    console.log('not good');
+                                }
+                            });
+                        } else if ($('#' + arno).attr('title') == "noadd") {
+                            $('#' + arno).attr('title', "add");
+                            $('#' + arno).attr('src', "./images/common/heart.png");
+                            // console.log()
+                            $.ajax({
+                                url: './phps/deleteArtFav.php', // 要傳送的頁面
+                                method: 'POST',
+                                dataType: 'text',             // 回傳資料
+                                data: { arno: arno },                 // 將表單資料用打包起來送出去
+                                success: function () {       // 成功以後會執行這個方法
+                                    console.log('good');
+                                },
+                                error: function () {
+                                    console.log('not good');
+                                },
+                            });
+                        }
+
+                    }
+
+                },
+                pub: function () {
+                    if (this.memRows.length == 0) {
+                        app2.lightbox = true;
+                    } else {
+                        location.href = '03_discuss_pub.html';
+                    }
+                },
+                showBox: function (ART_NO) {
+                    let lightbox = document.querySelectorAll('.overlay')[0];
+                    lightbox.style.display = '';
+                    this.artno = ART_NO;
+                },
+            },
+            mounted() {
+                //抓文章資料
+                let articlesRows;
+                let xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    app.articlesRows = JSON.parse(xhr.responseText);
+                    console.log(app.articlesRows);
+                }
+                xhr.open("get", "./phps/getArticles.php", true);
+                xhr.send(null);
+
+                // 抓會員資料
+                let memRows;
+                let xhr2 = new XMLHttpRequest();
+                xhr2.onload = function () {
+                    app.memRows = JSON.parse(xhr2.responseText);
+                    console.log(app.memRows);
+                };
+                xhr2.open("get", "./phps/member.php", true);
+                xhr2.send(null);
+
+                // 篩選
+                $('.list').click(function () {
+                    let value = $(this).attr('data-filter');
+                    if (value == 'all') {
+                        $('.article').removeClass('fil_none');
+                    }
+                    else {
+                        $('.article').not('.' + value).addClass('fil_none');
+                        $('.article').filter('.' + value).removeClass('fil_none');
+                    }
+                });
+
+                // 篩選切換
+                $('.list').click(function () {
+                    $(this).addClass('fit');
+                    $('.list').not(this).removeClass('fit');
+                });
+
+            },
+
+            updated() {
+                setTimeout(() => {
+                    for (var i = 0; this.articlesRows[1].length; i++) {
+                        let list = this.articlesRows[1][i].ART_NO;
+                        console.log(list);
+                        let showHeart = document.getElementById(list);
+                        showHeart.src = "./images/common/like.png";
+                        showHeart.title = "noadd";
+                    }
+                }, 10);
+            },
+
+        });
+
+    </script>
+</body>
+
+</html>

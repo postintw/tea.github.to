@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建立揪團-輸入揪團資訊</title>
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/tourCreateInfo.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+        integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+
+
+</head>
+
+<body>
+
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+
+    <div class="banner">
+        <div>
+            <h1>建立揪團</h1>
+        </div>
+    </div>
+
+    <div class="info_main" id="form">
+
+        <h2>輸入揪團資訊</h2>
+
+        <form action="./phps/fileUpload.php" method="post" enctype="multipart/form-data">
+            <div class="img_add">
+                <label for="theFile">上傳圖片:</label>
+                <div class="img_block">
+                    <label for="theFile"><img id="image" :src=previewImg></label>
+                </div>
+                <input hidden type="file" name="upFile" id="theFile">
+                <p>檔案大小: {{imgSize}} MB </p>
+                <p class="imgWarn">{{imgWarn}}</p>
+
+
+
+            </div>
+            <div class="tour_info">
+                <label for="tour_name">揪團名稱:</label>
+
+                <input type=" text" name="" id="tour_name" v-model=tourName maxlength="10" placeholder="上限10個字">
+            </div>
+            <div class="tour_info">
+                <label for="tour_people">上限人數:</label>
+                <input type="text" oninput="value=value.replace(/[^\d]/g,'')" name="" id="tour_people" maxlength="2"
+                    placeholder="只能輸入數字" v-model=people @keyup="warn()">
+                <div class="peopleAtt">{{peopleAtt}}</div>
+            </div>
+            <div class="tour_info">
+                <label for="todaydate">發起日期:</label>
+                <input type="text" class="datepicker" v-model=today disabled="disabled">
+
+            </div>
+            <div class="tour_info">
+                <label for="stopdate">截止日期:</label>
+                <input type="text" id="deaddatepicker" v-model=deadDate>
+                <div class=" peopleAtt">{{deadDateAtt}}</div>
+
+            </div>
+            <div class="tour_info">
+                <label for="activedate">出團日期:</label>
+                <input type="text" id="activedatepicker" v-model=activeDate>
+                <div class="peopleAtt">{{activeDateAtt}}</div>
+            </div>
+            <div class="tour_info">
+                <label for="">導遊需求:</label>
+                <input type="radio" name="leader" class="option" id="option1" value="需要" v-model=leader>
+                <label for="option1">需要</label>
+                <input type="radio" name="leader" class="option" id="option2" v-model=leader value="不需要">
+                <label for="option2">不需要</label>
+            </div>
+            <div class="tour_info_textarea">
+                <label>揪團簡介:</label>
+                <textarea name="" cols="30" rows="10" placeholder="介紹一下你的揪團吧!!(限100字)" maxlength="100" v-model=intro
+                    @keyup="checkText()"></textarea>
+                <p>剩餘字數: {{intrText}}</p>
+            </div>
+            <div class="tour_info_textarea">
+                <label>備註:</label>
+                <textarea name="" cols="30" rows="10" placeholder="請註明集合地點與當日出發時間!" maxlength="100" v-model=introPs
+                    @keyup="checkPsText()"></textarea>
+                <p>剩餘字數: {{introPsText}}</p>
+            </div>
+            <div class="formBtn">
+                <button><a href="./01_tourCreate.html"> 上一步</a></button>
+                <button class="next" type="submit" @click="goToNext()"
+                    v-if="tourName.length>0 && people.length>0 && intro.length>0 && introPs.length>0 && deadDate.length>0 && activeDate.length>0 ">
+                    下一步</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+    <script src="./vendors/jquery-ui.min.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/01_tourCreateInfro.js"></script>
+
+</body>
+
+</html>

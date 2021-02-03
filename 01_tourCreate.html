@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建立揪團-選擇搭配地點</title>
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/tourCreate.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+        integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+
+    <script src="https://unpkg.com/vue-star-rating@1.5.1/dist/star-rating.min.js"></script>
+</head>
+
+<body>
+
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <div class="banner">
+        <div>
+            <h1>建立揪團</h1>
+        </div>
+    </div>
+
+    <div id="tourCreate">
+        <h1>選擇搭配行程</h1>
+        <div class="createStep">
+            <ul>
+                <li class="t1" :style="t1styleChange">地點</li>
+                <li class="a1"></li>
+                <li class="t2" :style="t2styleChange">住宿</li>
+                <li class="a2"></li>
+                <li class="t3" :style="t3styleChange">餐廳</li>
+                <li class="a3"></li>
+                <li class="t4" :style="t4styleChange">活動</li>
+            </ul>
+        </div>
+
+
+
+        <div class="tourCreate_main">
+            <h2>{{title}}</h2>
+            <div class="tourCreate_leftside" id="tourCreate">
+                <component :is="content" @click-plus-location="goToHotel()" @click-plus-hotel="goToRest()"
+                    @click-plus-rest="goToActive()" @click-plus-rest1="showRest1()" @click-plus-rest2="showRest2()"
+                    @click-plus-active="goToNext()" @show-light-box="showBox()" :locations="locationRows"
+                    :hotels="hotelRows" :rests="restRows" :acts="actRows" :choice-tea="locationList">
+                </component>
+            </div>
+        </div>
+        <!-- ======================================================== -->
+
+
+
+        <!-- =======================行程清單========================== -->
+        <div class="tourCreate_rightside_block">
+            <h3>行程明細</h3>
+            <div class="tourCreate_rightside">
+                <div class="rightside">
+                    <h3>地點 <button @click="removeLocationStorage()" v-if="locationList.length>0">修改</button></h3>
+                    <input disabled v-model=locationList>
+                </div>
+                <div class="rightside">
+                    <h3>住宿 <button @click="removeHotelStorage()" v-if="hotelList.length>0">修改</button></h3>
+                    <input disabled v-model=hotelList>
+                </div>
+                <div class="rightside">
+                    <h3>餐廳 <button @click="removeRestStorage()" v-if="restList3.length>0">修改</button></h3>
+                    <input disabled v-model=restList1>
+                    <input disabled v-model=restList2>
+                    <input disabled v-model=restList3>
+                </div>
+                <div class="rightside">
+                    <h3>活動 <button @click="removeActiveStorage()" v-if="activeList.length>0">修改</button></h3>
+                    <input disabled v-model=activeList>
+                </div>
+            </div>
+            <div class="nextBtn" v-show=nextBtn><button><a href="./01_tourCreateInfro.html">下一步</a></button></div>
+        </div>
+
+
+
+        <!-- =======================lightbox================================= -->
+        <div class="create_lightBox_mask" id="lightBox" v-show="lightBox">
+            <div class="create_lightBox" v-for="location in locationRows">
+                <div class="garden">
+                    <img class="gpic" :src=boxImg>
+                </div>
+                <div class="ginfo">
+                    <div class="s1">
+                        <p class="p1">{{boxName}}</p>
+                    </div>
+                    <div class="allscore app" id="app" v-show="score">
+                        <span class="score">
+                            總分:&ensp;
+                        </span>
+                        <div>
+                            <star-rating :rating="4.7" :read-only="true" :increment="0.01" :star-size="25">
+                            </star-rating>
+                        </div>
+                    </div>
+                    <p class="p4" v-show="score">
+                        <span class="tt">茶園地址:</span>{{boxAddress}}
+                    </p>
+                    <p class="p5">
+                        {{boxContent}}
+                    </p>
+                    <div class="addActBtn">
+                        <button id="addAct" @click="addBox()">加入行程</button>
+                    </div>
+
+                </div>
+                <button id="close_lightBox" @click="closeBox()">X</button>
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+    <script src="./js/vue.js"></script>
+
+    <script src="./js/01_tourCreate.js"></script>
+</body>
+
+</html>

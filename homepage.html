@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.2/ScrollMagic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.2/plugins/animation.gsap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="js/index.js"></script>
+    <link rel="stylesheet" href="./vendors/slick-1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="./vendors/slick-1.8.1/slick/slick-theme.css">
+    <link rel="stylesheet" href="./css/product.css">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/product.js"></script>
+    <title>偵茶者 | TEA SEARCHER | 帶你找茶 喝茶 買茶</title>
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+
+<body>
+    <div id="leaves">
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_leaf.png" alt=""></i>
+    <i><img src="./images/common/img_petal_wh.png" alt=""></i>
+    <i><img src="./images/common/img_petal_ye.png" alt=""></i>
+</div>
+<script>
+    let leaf = document.getElementById("leaves");
+    setTimeout(removeLeaf, 5000);
+    function removeLeaf() {
+        leaf.setAttribute("style", "display:none")
+    };
+</script> <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <!-- 第一屏 -->
+    <div id="index_background">
+        <div class="green_ear" data-depth="0.1"><img id="green_earth" src="./images/index/fear.png" alt="" /></div>
+        <div class="bg_garden ga1" data-depth="1">
+            <img class="bg_gar ga1" src="./images/index/bgmt2.png" alt="" />
+        </div>
+        <div class="bg_garden ga2" data-depth="0.5">
+            <img class="bg_gar ga2" src="./images/index/bgmt3.png" alt="" />
+        </div>
+        <div class="bg_garden ga3" data-depth="0.3">
+            <img class="bg_gar ga3" src="./images/index/bgmt.png" alt="" />
+        </div>
+        <div class="bg_garden ga4" data-depth="0.2">
+            <img class="bg_gar ga4" src="./images/index/bgmt4.png" alt="" />
+        </div>
+        <div class="bg_garden ga5" data-depth="0.7">
+            <img class="bg_gar ga5" src="./images/index/bgtrunk.png" alt="" />
+        </div>
+        <div class="bg_garden ga6">
+            <img class="bg_gar ga6" src="./images/common/logo.png" alt="" />
+        </div>
+    </div>
+    <!-- 第二屏 -->
+    <div class="tour">
+        <img class="tour-head-img events-none" src="./images/index/all.png" alt="" />
+        <!-- <div class="scroll">SCROLL</div> -->
+        <h2 class="tour_title">讓台灣茶的美好重新回到⽣活中</h2>
+        <h2 class="tour_title_rwd">讓台灣茶的美好重新回到⽣活</h2>
+        <p class="tour_txt">
+            您知道台灣的烏⿓茶在世界居有領導地位嗎
+            <br />
+            跟著偵茶者喝遍全台茶園，帶您認識世界上最好的茶
+        </p>
+        <p class="tour_txt_rwd">
+            您知道台灣的烏⿓茶在世界居有領導地位嗎
+            <br />
+            跟著偵茶者喝遍全台茶園
+            <br />
+            帶您認識世界上最好的茶
+        </p>
+        <img class="tour-pouring events-none" src="./images/index/pouring.gif" alt="" />
+
+        <div class="tour-list">
+            <img class="img-back" src="./images/index/img-back.png" alt="" />
+            <ul>
+                <li>
+                    <img class="tour-list-line events-none" src="./images/index/line.png" alt="" />
+                    <p class="img"><img src="./images/index/tea1.png" alt="" /></p>
+                    <p class="head">
+                        <span>舞鶴茶園一日遊</span>
+                        <span class="head-sub">熱烈報名中</span>
+                    </p>
+                    <p class="txt">甫獲得世界冠軍，位在花蓮的舞鶴茶園，趕快加入朝聖行列!</p>
+                    <!-- <img class="tour-list__illust is-bottom events-none act-rwd" src="#" alt="" /> -->
+                </li>
+                <li>
+                    <!-- <img class="tour-list__illust events-none act-rwd" src="#" alt="" /> -->
+                    <img class="tour-list-line2 events-none" src="./images/index/line2.png" alt="" />
+                    <p class="img"><img src="./images/index/tea2.png" alt="" /></p>
+                    <p class="head">
+                        <span>坪林茶園兩天一夜</span>
+                        <span class="head-sub">來坪林學製茶</span>
+                    </p>
+                    <p class="txt">風靡一時的坪林因北宜公路的開通而沒落，卻不影響底蘊深厚的製茶技術，快來體驗!</p>
+                </li>
+                <li>
+                    <!-- <img class="tour-list__illust events-none act-rwd" src="#" 	alt="" /> -->
+                    <img class="tour-list-line3 events-none" src="./images/index/line3.png" alt="" />
+                    <p class="img"><img src="./images/index/tea3.png" alt="" /></p>
+                    <p class="head">
+                        <span>三峽鐵觀音體驗</span>
+                        <span class="head-sub">提供導覽</span>
+                    </p>
+                    <p class="txt">因為碧螺春而享譽盛名的三峽，也盛產遠近馳名的鐵觀音，趕快來近距離認識!</p>
+                    <!-- <img class="tour-list__illust is-bottom events-none act-rwd" src="#" alt="" /> -->
+                </li>
+            </ul>
+            <img class="img-front events-none" src="./images/index/img-front.png" alt="" />
+        </div>
+        <button class="lg-btn-tour">
+            <a href="./01_tour.html">參加揪團</a>
+        </button>
+    </div>
+    <!-- 第三屏 -->
+    <div class="vote">
+        <img class="vote-img-back events-none" src="./images/index/img-project-illust.png" alt="" />
+        <img class="vote-img-back-right events-none" src="./images/index/teabag.gif" alt="" />
+        <div class="container">
+            <h3 class="h3">茶園排行榜<span class="year">2020</span></h3>
+            <div class="stars">
+                <div class="starr"><img src="./images/index/starr.png" alt=""></div>
+                <div class="starr"><img src="./images/index/starr.png" alt=""></div>
+                <div class="starr"><img src="./images/index/starr.png" alt=""></div>
+                <div class="starr"><img src="./images/index/starr.png" alt=""></div>
+                <div class="starr"><img src="./images/index/starr.png" alt=""></div>
+            </div>
+            <div class="no3">評分排行前三名</div>
+            <ul class="vote-list">
+                <li class="vote-icon-01">
+                    <a href="./02_vote.html">
+                        <div class="circle">
+                            <div class="bg"></div>
+                            <p class="img">
+                                <img src="./images/index/tea5.png" alt="" />
+                            </p>
+                        </div>
+                        <p class="txt">
+                            <span class="txt-price">#1 </span><br />
+                            <span class="txt-loc">晴天茶園</span><br />
+                            <span class="txt-intro">群山包圍的秘境</span><br><br>
+                            <span class="txt-price">總分：5</span><br />
+                        </p>
+                    </a>
+                </li>
+                <li class="vote-icon-02">
+                    <a href="./02_vote.html">
+                        <div class="circle circle-or">
+                            <div class="bg"></div>
+                            <p class="img">
+                                <img src="./images/index/tea6.png" alt="" />
+                            </p>
+                        </div>
+                        <p class="txt">
+                            <span class="txt-price">#2</span> <br />
+                            <span class="txt-loc">熊空茶園</span> <br />
+                            <span class="txt-intro">聞名世界台灣烏龍茶發源地</span><br><br>
+                            <span class="txt-price">總分：3.7</span><br />
+                        </p>
+                    </a>
+                </li>
+                <li class="vote-icon-03">
+                    <a href="./02_vote.html">
+                        <div class="circle circle-bl">
+                            <div class="bg"></div>
+                            <p class="img">
+                                <img src="./images/index/tea7.png" alt="" />
+                            </p>
+                        </div>
+                        <p class="txt">
+                            <span class="txt-price">#3</span><br />
+                            <span class="txt-loc">舞鶴茶園</span><br />
+                            <span class="txt-intro">孕育極品茶的世外桃花源</span><br><br>
+                            <span class="txt-price">總分：3.6</span><br />
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <button class="lg-btn-vote">
+            <a href="02_vote.html">立刻評分</a>
+        </button>
+    </div>
+    <!-- 第四屏 -->
+    <div class="shop">
+        <div class="container">
+            <!-- <img class="shop-img-begin events-none" src="../src/images/index/" alt="" /> -->
+            <div class="shop-banner-holder">
+                <h3 class="h3 shopping">偵茶商城</h3>
+                <!-- <img class="shop-img-back events-none "	src="../src/images/index/" />  -->
+                <!-- <img class="shop-img-back events-none act-rwd" src="../src/images/index/" alt="" />  -->
+
+                <a class="shop-banner shop-banner-promo" href="06_game.html">
+                    <p class="img">
+                        <img src="./images/index/playinggame.png" alt="" />
+                    </p>
+                    <div class="shop-banner-txt">
+                        <p class="category-name">想得到更多購物優惠?</p>
+                        <p class="txt">馬上參加遊戲!</p>
+                    </div>
+                </a>
+                <!-- <img class=".shop-img-front events-none act-rwd" src="../src/images/img-project-illust-front-sp.png" alt="" /> -->
+            </div>
+
+            <div class="shop-list">
+                <div class="recommend">
+                    <h2 class="h4 shop-newest">推薦商品</h2>
+                    <div class="recommend_products" id="recommends">
+                    </div>
+                </div>
+                <!--   <h4 class="h4 shop-newest">最新上架商品</h4>
+                    <div id="project-articlelists"></div>
+                    <div>
+                        <ul>
+                            <li class="shop-list-item1">
+                                <a href="./04_product.html">
+                                    <p class="img">
+                                        <img src="./images/index/shop1.png" alt="" />
+                                    </p>
+
+                                    <div class="txt-area">
+                                        <p class="label">
+                                            <span class="num">550<span class="small">元</span></span
+                                            ><span class="ribon"></span>
+                                        </p>
+                                        <p class="category-name">德國紅點設計獎</p>
+                                        <div class="wrap-company">
+                                            <img class="shop-leaf" src="./images/index/company5.png" alt="" />
+                                            <p class="company">白居易3入禮盒</p>
+                                            <p class="txt">
+                                                現代與傳統完美的結合，透過小巧玲瓏的茶具將東方文化以不同的樣貌展現給大眾。
+                                            </p>
+                                        </div>
+                                        <div class="shop-icon-wrapper">
+                                            <input type="button" value="瀏覽商品" class="add_cart" />
+                                        </div>
+                                    </div>
+                                </a>
+                                <img class="memi addheart" title="加入收藏" src="./images/common/heart.png" alt="" />
+                            </li>
+                            <li class="is-category-05">
+                                <a href="./04_product.html">
+                                    <p class="img">
+                                        <img src="./images/index/shop2.png" alt="" />
+                                    </p>
+
+                                    <div class="txt-area">
+                                        <p class="label">
+                                            <span class="num">750<span class="small">元</span></span
+                                            ><span class="ribon"></span>
+                                        </p>
+                                        <p class="category-name">日式精美陶瓷</p>
+                                        <div class="wrap-company">
+                                            <img class="shop-leaf" src="./images/index/company5.png" alt="" />
+                                            <p class="company">GU旅用茗茶組</p>
+                                            <p class="txt">
+                                                杯口圓滑好就口，釉面色彩質地溫暖。簡單線條設計搭配茶壺內附可拆式不鏽鋼大濾網，送禮自用的好選擇。
+                                            </p>
+                                        </div>
+                                        <div class="shop-icon-wrapper">
+                                            <input type="button" value="瀏覽商品" class="add_cart" />
+                                        </div>
+                                    </div>
+                                </a>
+                                <img class="memi addheart" title="加入收藏" src="./images/common/heart.png" alt="" />
+                            </li>
+                            <li class="is-category-05">
+                                <a href="./04_product.html">
+                                    <p class="img">
+                                        <img src="./images/index/shop3.png" alt="" />
+                                    </p>
+
+                                    <div class="txt-area">
+                                        <p class="label">
+                                            <span class="num">950<span class="small">元</span></span
+                                            ><span class="ribon"></span>
+                                        </p>
+                                        <p class="category-name">日系簡約精緻風格</p>
+                                        <div class="wrap-company">
+                                            <img class="shop-leaf" src="./images/index/company5.png" alt="" />
+                                            <p class="company">KINTO JP茶壺</p>
+                                            <p class="txt">
+                                                以「更美味、簡單」的考量，搭配沉著的釉色而帶來穩定感的茶具。大空間濾網讓茶葉可以自由地展開，泡出好茶。
+                                            </p>
+                                        </div>
+                                        <div class="shop-icon-wrapper">
+                                            <input type="button" value="瀏覽商品" class="add_cart" />
+                                        </div>
+                                    </div>
+                                </a>
+                                <img class="memi addheart" title="加入收藏" src="./images/common/heart.png" alt="" />
+                            </li>
+                        </ul>
+                        <img
+                            class="shop-img-front events-none"
+                            src="./images/index/img-project-illust-front.png"
+                            alt=""
+                        />
+                    </div>
+                    <button class="lg-btn-shop">
+                        <a href="./04_shopping.html">逛商城去</a>
+                    </button>-->
+            </div>
+        </div>
+    </div>
+    <!-- 第五屏 -->
+    <div class="discuss">
+        <div class="dis-img-top">
+            <img src="./images/index/img-project-illust-front-sp.png" alt="" />
+        </div>
+        <h3 class="h3">討論區</h3>
+        <div class="dis-img-right">
+            <img src="./images/index/img-about-list-illust-sp-01.png" alt="" />
+        </div>
+
+        <div class="container">
+            <div class="dis-box-info delay150">
+                <p class="img">
+                    <img src="./images/index/discuss1.png" alt="" />
+                </p>
+                <div class="txt-area">
+                    <p class="txt-title">今天採茶好好玩</p>
+                    <p class="txt">
+                        茶園是網美好去處 <br />教你在茶園拍名模等級網美照!茶園是網美好去處茶園是網美好去處
+                    </p>
+                    <button class="lg-btn-dis">
+                        <a href="./03_discuss.html">前往討論</a>
+                    </button>
+                </div>
+            </div>
+            <div class="dis-box-info delay150">
+                <p class="img">
+                    <img src="./images/index/discuss2.png" alt="" />
+                </p>
+                <div class="txt-area">
+                    <p class="txt-title">茶園網美好去處</p>
+                    <p class="txt">
+                        茶園是網美好去處
+                        <br />教你在茶園拍名模等級網美照!教你在茶園拍名模等級網美照教你在茶園拍名模等級網美照
+                    </p>
+
+                    <button class="lg-btn-dis">
+                        <a href="./03_discuss.html">前往討論</a>
+                    </button>
+                </div>
+            </div>
+            <div class="dis-box-info delay150">
+                <p class="img">
+                    <img src="./images/index/discuss3.png" alt="" />
+                </p>
+                <div class="txt-area">
+                    <p class="txt-title">去茶園家族旅行</p>
+                    <p class="txt">
+                        去茶園家族旅行去茶園家族旅行 <br />老少咸宜!老少咸宜!老少咸宜!老少咸宜!老少咸宜!老少咸宜!
+                    </p>
+                    <button class="lg-btn-dis">
+                        <a href="./03_discuss.html">前往討論</a>
+                    </button>
+                </div>
+            </div>
+            <div class="dis-img-btm">
+                <img src="./images/index/leafs-l.png" alt="" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 第六屏-->
+    <div class="ending">
+        <span class="ending-txt">期待與你相見! </span>
+    </div>
+
+    <!-- footer -->
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+
+    <script>
+        $('.addheart').click(function (e) {
+            e.preventDefault
+            if (this.title == '加入收藏') {
+                this.title = '取消收藏'
+                this.src = './images/common/like.png'
+            } else {
+                this.title = '加入收藏'
+                this.src = './images/common/heart.png'
+            }
+        })
+    </script>
+</body>
+
+</html>

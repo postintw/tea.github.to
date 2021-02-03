@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <title>偵茶者後台管理 | TEA SEARCHER | 帶你找茶 喝茶 買茶</title>
+        <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+        <link rel="stylesheet" href="./css/admin.css" />
+        <script src="js/admin.js"></script>
+    </head>
+    <body>
+        <nav class="nav">
+            <!-- logo放置區 -->
+            <a href="index.html">
+                <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+            </a>
+        </nav>
+
+        <aside class="aside">
+            <ul class="nav_list">
+                <a href="admin_tea.html"><h1>後台管理頁</h1></a>
+
+                <li class="li">
+                    <a href="#" data-target="admin"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />管理員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="member">
+                        <img class="navicon" src="images/common/nav_leaf.png" alt="" />會員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="tour"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />揪團活動管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="custom"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />客製化內容管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a class="active" href="#" data-target="shop"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />商城管理</a
+                    >
+                </li>
+
+                <li class="li">
+                    <a href="#" data-target="report"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />檢舉管理</a
+                    >
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main">
+            <div id="app">
+                <div class="tab_container -on shop">
+                    <div class="tab_list_block">
+                        <ul class="tab_list">
+                            <li><a href="#" data-target="tab1" class="tab -on">商品查詢及上下架</a></li>
+                            <li><a href="#" data-target="tab2" class="tab -on">商城訂單管理</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab_contents">
+                        <div class="tab tab1 -on">
+                            <form>
+                                <input type="text" name="search_pro" v-model="psn" placeholder="請在此輸入商品名稱" />
+                                <button class="btn-confirm" type="button" @click="query_pro_psn">查詢</button>
+                                <button class="btn-confirm" type="button" @click="get_produs">回到列表</button>
+                            </form>
+                            <!-- <form>
+                                <input type="text" v-model="add_NAME" placeholder="請輸入商品名稱" />
+                                <input type="text" v-model="add_INFO" placeholder="請輸入商品特色" />
+                                <input type="text" v-model="add_PRICE" placeholder="請輸入商品價格" />
+                                <button class="btn-confirm" type="button" @click="add_products">新增商品</button>
+                            </form> -->
+                            <table>
+                                商品狀態及資訊查詢
+                                <tr>
+                                    <th>商品編號</th>
+                                    <th>商品名稱</th>
+                                    <th>商品特色</th>
+                                    <th>商品價格</th>
+                                    <th>銷售數量</th>
+                                    <th>商品上下架狀態</th>
+                                    <th>確認修改</th>
+                                </tr>
+                                <tbody v-for="(item,key) in products">
+                                    <tr>
+                                        <td>{{item.PSN}}</td>
+                                        <td>
+                                            <input type="text" :value="item.NAME" @keyup="changeNAME($event,key)" />
+                                        </td>
+                                        <td>
+                                            <input type="text" :value="item.INFO" @keyup="changeINFO($event,key)" />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                size="1"
+                                                :value="item.PRICE"
+                                                @keyup="changePRICE($event,key)"
+                                            />
+                                        </td>
+                                        <td>{{item.SOLD}}</td>
+
+                                        <td>
+                                            <div class="form-group">
+                                                <label class="switch">
+                                                    <input type="checkbox" v-model="item.ischecked" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="button"
+                                                class="btn-delete"
+                                                value="確認修改"
+                                                @click="edit_products(item.PSN,key)"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab tab2">
+                            <form>
+                                <input type="text" v-model="ord_no" placeholder="請在此輸入訂單編號" />
+                                <button class="btn-confirm" type="button" @click="query_ord">查詢</button>
+                                <button class="btn-confirm" type="button" @click="get_orders">回到列表</button>
+                            </form>
+                            <div id="ord_management">
+                                <h5 style="margin-bottom: 20px">商城訂單管理</h5>
+
+                                <div>
+                                    <div class="th">訂單編號</div>
+                                    <div class="th">會員編號</div>
+                                    <div class="th">訂單狀態</div>
+                                    <div class="th">訂單成立日期</div>
+                                    <div class="th">寄貨方式</div>
+                                    <div class="th">付款方式</div>
+                                    <div class="th">折扣點數</div>
+                                    <div class="th">訂單總額</div>
+                                    <div class="th">收件人</div>
+                                    <div class="th">收件人地址</div>
+                                    <div class="th">收件人電話</div>
+                                    <div class="th">確認修改</div>
+                                </div>
+
+                                <!-- <tr>
+                                    <td>1</td>
+                                </tr> -->
+                                <orderdiv v-for="(item,key) in orders" :item="item"></orderdiv>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 燈箱 -->
+                <lightbox v-if="lightbox_show" @close_lightbox="close_lightbox"> </lightbox>
+            </div>
+        </main>
+        <!-- footer -->
+        <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+        <script>
+            //tab
+            $(function () {
+                $('a.tab').on('click', function (e) {
+                    e.preventDefault()
+
+                    /* 將頁籤列表移除所有 -on，再將指定的加上 -on */
+                    $(this).closest('ul').find('a.tab').removeClass('-on')
+                    $(this).addClass('-on')
+
+                    /* 找到對應的頁籤內容，加上 -on 來顯示 */
+                    $('div.tab').removeClass('-on')
+                    $('div.tab.' + $(this).attr('data-target')).addClass('-on')
+                })
+            })
+        </script>
+        <script src="./js/vue.js"></script>
+        <script src="js/admin_shop_vue.js"></script>
+    </body>
+</html>

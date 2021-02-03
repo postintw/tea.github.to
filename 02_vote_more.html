@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <title>茶園票選</title>
+    <link rel="stylesheet" href="./css/vote_more.css">
+    <script src="https://unpkg.com/vue-star-rating@1.5.1/dist/star-rating.min.js"></script>
+    
+    
+</head>
+
+<body>
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <div class="banner">
+        <p class="fir">茶園排行</p>
+    </div>
+
+    <main id="app" v-cloak>
+        <div class="all" v-for="garitem in gardenRows">
+            <div class="garden">
+                <img class="gpic" :src="garitem.GARD_PIC">
+            </div>
+            <div class="ginfo">
+                <div class="s1">
+                    <p class="p1">{{garitem.GARD_NAME}}</p>
+                    <div class="fb-share-button" :data-href="'https://tibamef2e.com/ced101/project/g2/02_vote_more.html?GARD_ID='+garitem.GARD_ID" data-layout="button"
+                            data-size="small">
+                            <a target="_blank"
+                               style="background: #1483f5; color: white; padding: 2px 9px; border-radius: 5px; font-weight: bold;"
+                                :href="'https://www.facebook.com/sharer/sharer.php?u='+'https://tibamef2e.com/ced101/project/g2/02_vote_more.html?GARD_ID='+garitem.GARD_ID+'&amp;src=sdkpreparse'"
+                                class="fb-xfbml-parse-ignore fbi">
+                                分享
+                            </a>
+                    </div>
+                </div>
+
+                <div class="allscore app">
+                    <span class="score">
+                        總分:&ensp;
+                    </span>
+                    <div>
+                        <star-rating  :rating="garitem.GARD_AVG" :read-only="true" :increment="0.01" :star-size="25"></star-rating>
+                    </div>
+                </div>
+
+                <p class="p3"><span class="tt">評分次數:</span> {{garitem.GARD_CLICK}}</p>
+                <p class="p4">
+                    <span class="tt">茶園地址:</span> {{garitem.GARD_ADDRESS}}
+                </p>
+                <p class="p5">
+                    {{garitem.GARD_CONTENT}}
+                </p>
+                <div class="btwrap app2">
+                    
+                    <button class="bt myBtn" id="myBtn" @click="show_lightbox(garitem.GARD_ID)">
+                        我要評分
+                    </button>
+
+                    <!-- overlay -->
+                    <div class="overlay" v-if="lightbox"></div>
+                    <!-- modal -->
+                    <div class="modal" v-if="lightbox">
+                        <form>
+                            <input type="hidden" id="gardenId">
+                            <div class="close"  @click="close_lightbox">
+                                
+                            </div>
+                            <p class="welcome">歡迎評分</p>
+                            <div class="app">
+                                <div class="star">
+                                    <star-rating :increment="0.5" :show-rating="false" @rating-selected="setRating"></star-rating>
+                                    <div style="margin-top:10px;font-weight:bold;">{{rating}}</div>                                </div>
+                                </div>
+                            <div id="btnSendVote" class="go" @click="sendScore">送出</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 評分成功燈箱 -->
+        <div class="okbox_wrapper" v-if="okbox">
+            <div class="modal2">
+                    <p class="welcome">評分成功</p>
+                    <button @click="okbox = false" class="confirm">確認</button>
+            </div>
+        </div>
+
+        <!-- 一天只能評分一次燈箱 -->
+        <div class="okbox_wrapper" v-if="timeBox">
+            <div class="modal2">
+                    <p class="welcome">一天只能評分一次喔 !</p>
+                    <button @click="timeBox = false" class="confirm">確認</button>
+            </div>
+        </div>
+
+        <!-- 收藏成功燈箱 -->
+        <div class="ok_wrap" v-if="like_box">
+            <div class="ok_box">
+                <p class="welcome">已加入收藏</p>
+                <div @click="like_box = false" class="yes">確定</div>
+            </div>
+        </div>
+
+
+        <div id="commandall">
+            <h3 class="t1">茶園留言</h2>
+            <!--       留言+檢舉燈箱開始        -->
+            <!-- 接收子組件傳來的事件show-box後執行showModal(i)函式  -->
+            <comment-component v-for="(msgRow, i) in msgRows"
+                               :key="msgRow.MSG_NO"
+                               :mem-pic="msgRow.MEM_IMG"
+                               :mem-name="msgRow.MEM_NICNAME"
+                               :msg-con="msgRow.MSG_CONTENT"
+                               :msg-time="msgRow.MSG_DATE"
+                               :msg-no="msgRow.MSG_NO"
+                               @show-box="showModal(i)"
+                               @close-box="closeModal(i)"
+                               @send-repo="sendReport(i)"
+                               @close-repo="closeRepBox(i)">
+            </comment-component>
+            <!--    留言+檢舉燈箱結束    -->
+
+            
+            <!--    無留言時顯示         -->
+            <div class="empty" v-show="msgRows.length==0">此茶園尚無留言，歡迎留言。</div>
+
+
+        </div>
+
+        <form>
+            <div class="input_container">
+                <h3>新增留言</h3>
+                <div class="create_command_container">
+                    <textarea id="content" class="create_command"></textarea>
+                    
+                        
+                    <div class="btnc" @click="sendComm">送出</div>
+                        
+                    
+                </div>
+            </div>
+
+        </form>
+
+        <h3>相關熱門揪團</h3>
+        <div class="tour_browse_block" id="tourBrowseBlock"></div>
+
+        <div class="toursection">
+            <div v-for="tourRow in tourRows" class="tour_block">
+                <div class="tour_img">
+                    <div class="tour_img_text" >
+                        <p>{{tourRow.TOUR_TITLE}}</p>
+                        <p>{{tourRow.TOUR_SETOFFTIME}} 出團</p>
+                    </div>
+                    <img :src="tourRow.TOUR_IMG">
+                    <div class="love_share">
+                        <div class="love">
+                            <img @click="setFav(tourRow.TOUR_ID)" class="like" :src="tourRow.img">
+                        </div>
+                    </div>
+                </div>
+                
+                
+
+                <div class="tour_text">
+                    <div class="deadline">
+                        <h3>茶園名稱</h3>
+                        <p>{{tourRow.GARD_NAME}}</p>
+                    </div>
+                    <div class="deadline">
+                        <h3>截止揪團日期</h3>
+                        <p>{{tourRow.DEADLINE_DATE}}</p>
+                    </div>
+                    <div class="price">
+                        <h3>預估費用</h3>
+                        <p>${{tourRow.GARD_PRICE}}</p>
+                    </div>
+                    <div class="ink">
+                        <div class="ink_bg"></div>
+                        <div class="inkText">
+                            <h3>參加人數</h3>
+                            <p>{{tourRow.NUM_OF_PARTICIPANTS}}/{{tourRow.TOUR_PEOPLE}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tourBtn">
+                    <button type="button">
+                        <a :href="'02_tour_more.html?TOUR_ID=' + tourRow.TOUR_ID">查看更多</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="btwrap">
+            <button class="bt">
+                <a href="01_tour.html">
+                    瀏覽更多揪團
+                </a>
+            </button>
+        </div>
+    </main>
+
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+
+    <script src="./js/vue.js"></script>
+    <script>
+        
+        Vue.component("star-rating", VueStarRating.default);
+        Vue.component("comment-component",{
+            props:['mem-pic','mem-name','msg-con','msg-time','msg-no'], //父組件傳給子組件的資料
+            template:`
+                <div class="command">
+                    <div class="nameall">
+                        <div class="mem_photo"><img class="mem_photo" :src="memPic" alt=""></div>
+                        <span class="pub_mem_name">{{memName}}</span>
+                    </div>
+                    <div class="text_excl">
+                        <div class="command_text">
+                            <div class="pub_text">{{msgCon}}</div>
+                            <div class="com_pub_time">發表於{{msgTime}}</div>
+                        </div>
+                        <div class="excl">
+                            <!-- 檢舉按鈕 -->
+                            <div class="repobt" @click="showModal_son">
+                                <img class="excl" src="./images/common/852019_exclamation_512x512.png" alt="">
+                            </div>
+
+                            <!-- 檢舉燈箱 -->
+                            <div class="modal_wrapper"  style="display: none;">
+                                <div class="modal">
+                                        <div class="close" @click="closeModal_son">
+                                            <img class="cancel" src="images/vote/cancel.png">
+                                        </div>
+                                        <p class="welcome">請選取檢舉理由</p>
+                                    <form>
+                                        <label>
+                                            <input class="reason" type="radio" name="option" value="惡意中傷">&ensp;惡意中傷
+                                        </label>
+                                        <br>
+                                        <label>
+                                            <input class="reason" type="radio" name="option" value="散布廣告">&ensp;散布廣告
+                                        </label>
+                                        <br>
+                                        <label>
+                                            <input class="reason" type="radio" name="option" value="色情資訊">&ensp;色情資訊
+                                        </label>
+                                        <br>
+                                        <label>
+                                            <input class="reason" type="radio" name="option" value="不雅字眼">&ensp;不雅字眼
+                                        </label>
+                                        <div @click="sendRepo_son" class="go" type="submit">送出</div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="repook" style="display: none;">
+                                <div class="modal2">
+                                    <p class="welcome">檢舉成功</p>
+                                    <button @click="close_repo" class="repook_bt">確認</button>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            methods: {
+                showModal_son(){
+                    // 此子組件發出emit事件至父層的自定義事件(show-box)
+                    this.$emit('show-box');
+                },
+                closeModal_son(){
+                    this.$emit('close-box');
+                },
+                sendRepo_son(){
+                    this.$emit('send-repo');
+                },
+                close_repo(){
+                    this.$emit('close-repo');
+                }
+                
+            },
+        });
+
+        
+
+        var app = new Vue({
+            el: "#app",
+            data: {
+                memRows:'',
+                dataRows:'',
+                gardenRows:'',
+                tourRows:'',
+                msgRows:'',
+                likeRows:'',
+                pastDate:'',
+                lightbox: false,
+                lightbox_GARD_ID:'',
+                okbox: false,
+                timeBox: false,
+                likeTour:'',
+                like_box: false,
+
+                rating: '您尚未評分',
+                sendRating:'',
+                targetPageId:'',
+                today:'',
+                nowURL:''
+            },
+
+            methods: {
+                //抓會員登入資料
+                getMem(){
+                    let xhr = new XMLHttpRequest();
+                    xhr.onload = function () {
+                        if(xhr.status == 200){ //success
+                            app.memRows = JSON.parse(xhr.responseText);
+                        }else{
+                            alert(xhr.status);
+                        }
+                    };
+                    xhr.open("get", "./phps/member.php", true);
+                    xhr.send(null);
+                },
+
+                show_lightbox(GARD_ID){
+                    this.lightbox = true;
+                    this.lightbox_GARD_ID = GARD_ID;
+                },
+
+                close_lightbox(){
+                    this.lightbox = false;
+                    this.rating = '您尚未評分';
+                },
+
+                setRating(rating) {
+                    this.rating = "您評了 " + rating + " 分";
+                    return this.sendRating = rating;
+                },
+
+                nowDate(){
+                    let today = new Date();
+                    let dd = today.getDate();
+                    let mm = today.getMonth()+1; 
+                    let yyyy = today.getFullYear();
+                    if(dd<10){
+                        dd='0'+dd;
+                    } 
+                    if(mm<10) {
+                        mm='0'+mm;
+                    }
+                    today = yyyy+'-'+mm+'-'+dd;
+                    this.today = today
+                },
+
+                sendScore(){
+
+                    if(this.memRows.length == 0){ //not login
+                        app2.lightbox = true
+                        this.lightbox = false
+                        this.rating = '您尚未評分'
+                    }else{ 
+                        console.log("today : ", this.today);
+                        console.log("this.pastDate[0].VOTE_DATE :　", this.pastDate[0].VOTE_DATE)
+                        if(this.today == this.pastDate[0].VOTE_DATE){
+                            this.lightbox = false
+                            this.timeBox = true
+                            this.rating = '您尚未評分'
+                        }else{ //can vote
+                            let xhr = new XMLHttpRequest();
+                            xhr.onload = function(){
+                                if(xhr.status == 200){ //success
+                                    console.log('success')
+                                }else{
+                                    alert(xhr.status);
+                                }
+                            }
+                            xhr.open("post", "./phps/send_vote.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = "GARD_VOTE=" + this.sendRating + "&" + "GARD_ID=" + this.targetPageId;
+                            xhr.send(data_info);
+
+                            this.lightbox = false
+                            this.get_data()
+                            this.rating = '您尚未評分'
+
+                            this.okbox = true
+                        }
+
+                        
+                    } 
+                    
+                },
+
+                get_data(){
+                    let nowURL = window.location.href;
+                    this.nowURL = nowURL;
+                    let searchURL = window.location.search;
+                    let targetPageId = searchURL.split("=")[1];
+                    this.targetPageId = targetPageId;
+                    //============傳targetPageId給php
+                    
+                    let xhr = new XMLHttpRequest();
+                        //註冊callback function 
+                        xhr.onload = function(){
+                            // console.log(xhr.responseText);
+                            if(xhr.status == 200){ //success
+                                app.dataRows = JSON.parse(xhr.responseText);
+                                app.gardenRows = app.dataRows[0];
+                                app.pastDate = app.dataRows[1];
+                                app.tourRows = app.dataRows[2];
+                                app.msgRows = app.dataRows[3];
+                                app.likeRows = app.dataRows[4];
+
+                            }else{
+                                alert(xhr.status);
+                            }
+                        }
+                        //設定好所要連結的程式
+                        xhr.open("post", "./phps/vote_more.php", true);
+                        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                        //送出資料
+                        // let data_info = "GARD_ID=" + this.targetPageId;
+                        let data_info = `GARD_ID=${this.targetPageId}`;
+                        xhr.send(data_info);
+                },
+
+                showModal(i){
+                    let modal = document.querySelectorAll('.modal_wrapper');
+                    modal[i].style.display = '';
+                },
+
+                closeModal(i){
+                    let modal = document.querySelectorAll('.modal_wrapper');
+                    modal[i].style.display = 'none';
+                },
+
+                sendReport(i){
+                    if(this.memRows.length == 0){
+                        app2.lightbox = true
+                        let modal = document.querySelectorAll('.modal_wrapper');
+                        modal[i].style.display = 'none';
+                    }else{
+                        let xhr = new XMLHttpRequest();
+                    // console.log(this.msgRows[i].MSG_NO)
+                    // console.log(document.querySelector('input[name="option"]:checked').value)
+                        xhr.onload = function(){
+                            if(xhr.status == 200){ //success
+                                let modal = document.querySelectorAll('.modal_wrapper');
+                                modal[i].style.display = 'none';
+                                
+                                let repook = document.querySelectorAll('.repook');
+                                repook[i].style.display = '';
+                            }else{
+                                alert(xhr.status);
+                            }
+                        }
+                        xhr.open("post", "./phps/send_report.php", true);
+                        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                        //送出資料
+                        let data_info = `MSG_NO=${this.msgRows[i].MSG_NO}&MSG_REP_CONTENT=${document.querySelector('input[name="option"]:checked').value}`;
+                        xhr.send(data_info);
+                    }
+                    
+                },
+
+                closeRepBox(i){
+                    let repook = document.querySelectorAll('.repook');
+                    repook[i].style.display = 'none';
+                },
+
+                sendComm(){
+                    let words = document.getElementById("content")
+                    if(this.memRows.length == 0){
+                        app2.lightbox = true
+                    }else{
+                        if(words.value == ''){
+                        alert('尚未輸入內容')
+                    }else{
+                        let xhr = new XMLHttpRequest();
+                        xhr.onload = function(){
+                            if(xhr.status == 200){ //success
+                                console.log('success')
+                            }else{
+                                alert(xhr.status);
+                            }
+                        }
+                            xhr.open("post", "./phps/send_words.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = `GARD_ID=${this.targetPageId}&MSG_CONTENT=${words.value}`;
+                            xhr.send(data_info);
+
+                            this.get_data()
+                            words.value = ''
+                        }
+                    }
+                },
+
+                setFav(TOUR_ID){
+                    this.likeTour = TOUR_ID
+
+                    if(this.memRows.length == 0){
+                        app2.lightbox = true
+                    }else{
+                        if(this.likeRows.indexOf(this.likeTour) != -1){
+                            let xhr = new XMLHttpRequest();
+                            xhr.onload = function(){
+                                if(xhr.status == 200){ //success
+                                    console.log('移除收藏成功')
+                                    // let like = document.querySelectorAll('.like')
+                                    // for(i=0 ; i<like.length ; i++){
+                                    //     like.src = "images/common/heart.png";
+                                    // }
+                                    function changeHa(e) {
+                                        let obj = e.target;	
+                                        obj.src = "images/common/heart.png";
+                                    }
+                                }else{
+                                    // alert(xhr.status);
+                                }
+                            }
+                            xhr.open("post", "./phps/del_fav_tour.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = `TOUR_ID=${this.likeTour}`;
+                            xhr.send(data_info);
+
+                            this.get_data()
+                            // alert('移除收藏成功')
+                        }else{
+                            let xhr = new XMLHttpRequest();
+                            xhr.onload = function(){
+                                if(xhr.status == 200){ //success
+                                    console.log('加入收藏成功')
+                                    // let like = document.querySelectorAll('.like')
+                                    // for(i=0 ; i<like.length ; i++){
+                                    //    like[i].src = "images/common/like.png";
+                                    // }
+                                    function changeHa(e) {
+                                        let obj = e.target;	
+                                        obj.src = "images/common/like.png";
+                                    }
+                                    
+                                }else{
+                                    // alert(xhr.status);
+                                }
+                            }
+                            xhr.open("post", "./phps/add_fav_tour.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = `TOUR_ID=${this.likeTour}`;
+                            xhr.send(data_info);
+
+                            this.get_data()
+                            this.like_box = true
+                        }
+                    }
+
+                }
+
+                
+            },
+
+            mounted() {
+
+                //============去server端拿資料
+                this.get_data()
+                this.nowDate()
+                this.getMem()
+                
+
+            },
+
+            // beforeUpdate() {
+            //     this.get_data()
+            // },
+        });
+
+    </script>
+
+    
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v9.0" nonce="sJvAs018"></script>
+</body>
+
+</html>

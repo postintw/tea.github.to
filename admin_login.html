@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>偵茶者後台管理 | TEA SEARCHER | 帶你找茶 喝茶 買茶</title>
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <!-- <link rel="stylesheet" href="./css/member_login_register.css"> -->
+    <link rel="stylesheet" href="./css/admin_login.css" />
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com">  -->
+    <script src="./js/jquery-3.5.1.min.js"></script>
+    <script src="./js/admin_login.js"></script>
+    <title>管理員登入</title>
+</head>
+<body>
+    <div class="banner">
+        <h2>偵茶者後台</h2>
+    </div>
+    <div class="form">
+              
+        <div class="tab-content">
+            <div id="login">   
+                <h2>請輸入管理員帳密</h2>
+                <form action="./phps/admin_login.php" method="post">
+                    <div class="field-wrap">
+                        <label for="MEM_ID">
+                            帳號<span class="req">*</span>
+                        </label>
+                        <input type="text"required autocomplete="off" id="log_memId" name="ADMIN_ID"/>
+                    </div>
+                    <div class="field-wrap">
+                        <label for="MEM_PW">
+                            密碼<span class="req">*</span>
+                        </label>
+                        <input type="password"required autocomplete="off" id="log_memPw" name="ADMIN_PW"/>
+                    </div>
+                    <!-- <p class="forgot"><a href="#">忘記密碼？</a></p> -->
+                    <div class="btn_container">
+                        <button id="log-in" class="btn"/>登入</button>
+                    </div>
+                </form>
+            </div>
+            <div id="forget_pw">
+                <h2>找回密碼</h2>
+                <form action="/" method="post">
+                    <div class="field-wrap">
+                        <label for="get_email">
+                            信箱<span class="req">*</span>
+                        </label>
+                        <input type="email"required autocomplete="off" id="get_email" name="get_email"/>
+                    </div>
+                    <div class="btn_container">
+                        <button class="btn"/>取回密碼</button>
+                    </div>
+                    
+                </form>
+            </div>        
+          
+        </div>  
+  </div>
+   <!-- footer -->
+   <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+</body>
+</html>

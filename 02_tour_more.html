@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+    <title>茶園揪團</title>
+    <link rel="stylesheet" href="./css/tour_more.css">
+</head>
+
+<body>
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <div class="banner">
+        <p class="fir">茶園揪團</p>
+    </div>
+
+    <main id="app" v-cloak>
+        <div class="all" v-for="touritem in dataTop">
+            <div class="tour">
+                <img class="tpic" :src="touritem.TOUR_IMG">
+            </div>
+
+            <div class="tinfo">
+
+                <div class="t1">
+                    <p class="pp1">{{touritem.TOUR_TITLE}}</p>
+                    <div class="social">
+                        <div class="love">
+                            <img @click="addFav" class="like" :src="imageSource" alt="">
+                        </div>
+                        <!-- <div class="fb-share-button" :data-href="nowURL" data-layout="button"
+                            data-size="small">
+                            <a target="_blank"
+                            style="background: #1483f5; color: white; padding: 2px 9px; border-radius: 5px; font-weight: bold;"
+                                :href="'https://www.facebook.com/sharer/sharer.php?u='+nowURL+'&amp;src=sdkpreparse'"
+                                class="fb-xfbml-parse-ignore">
+                                分享
+                            </a>
+                        </div> -->
+                    </div>
+
+                </div>
+
+                <p>
+                    <span class="green">揪團簡介:</span> {{touritem.TOUR_INFRO}}
+                </p>
+
+                <p>
+                    <span class="green">出團日期:</span> {{touritem.TOUR_SETOFFTIME}}
+                </p>
+
+                <p>
+                    <span class="green">參加人數:</span> {{touritem.NUM_OF_PARTICIPANTS}}/{{touritem.TOUR_PEOPLE}} 人
+                </p>
+
+                <p>
+                    <span class="green">預估費用:</span> ${{touritem.GARD_PRICE}}
+                </p>
+
+                <p>
+                    <span class="green">茶園名稱:</span> {{touritem.GARD_NAME}}
+                </p>
+                <p>
+                    <span class="green">茶園地址:</span> {{touritem.GARD_ADDRESS}}
+                </p>
+
+                <p><span class="green">茶園型態:</span> {{checktype(touritem.GARD_TYPE)}}</p>
+                <p><span class="green">活動:</span> {{touritem.TOUR_ACTIVE}}</p>
+                <p><span class="green">導遊:</span> {{checkLeader(touritem.TOUR_LEADER)}}</p>
+                <p><span class="green">備註:</span> {{touritem.TOUR_PS}}</p>
+
+                <div class="btwrap">
+                    <button class="bt" id="changeText" @click="joinTour(touritem.TOUR_ID,touritem.NUM_OF_PARTICIPANTS,touritem.TOUR_PEOPLE,touritem.MEM_NO)">
+                        {{touritem.joined}}
+                    </button>
+
+                    <div class="date">
+                        <p>
+                            發起日期: {{touritem.SETUP_DATE}}
+                        </p>
+                        <p>
+                            截止日期: {{touritem.DEADLINE_DATE}}
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="ok_wrap" v-if="confirm_box">
+            <div class="ok_box">
+                <p class="welcome">確定要報名嗎?</p>
+                <div @click="realJoin" class="yes">確定</div>
+                <div @click="confirm_box = false" class="yes">取消</div>
+            </div>
+        </div>
+
+        <!-- 報名成功燈箱 -->
+        <div class="ok_wrap" v-if="good_box">
+            <div class="ok_box">
+                <p class="welcome">報名成功 !</p>
+                <div @click="good_box = false" class="yes">確定</div>
+            </div>
+        </div>
+
+        <!-- 收藏成功燈箱 -->
+        <div class="ok_wrap" v-if="like_box">
+            <div class="ok_box">
+                <p class="welcome">已加入收藏</p>
+                <div @click="like_box = false" class="yes">確定</div>
+            </div>
+        </div>
+
+        <h3>食宿簡介</h3>
+
+        <div class="all2">
+
+
+
+            <div v-for="hotelRow in hotelRows" class="hotel_container first">
+                <p class="ht">旅館</p>
+                <div class="hotel">
+                    <img class="hpic" :src="hotelRow.HOTEL_IMG">
+                    <p class="hname">{{hotelRow.HOTEL_NAME}}</p>
+                    <p class="hinfo">{{hotelRow.HOTEL_INFRO}}</p>
+                </div>
+            </div>
+
+
+            <div class="hotel_container sec">
+                <p class="ht eat">餐廳</p>
+                <div v-for="foodRow in foodRows" class="hotel">
+                    <img class="hpic" :src="foodRow.RESTAURANT_IMG">
+                    <p class="hname">{{foodRow.RESTAURANT_NAME}}</p>
+                    <p class="hinfo">{{foodRow.RESTAURANT_INFRO}}</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="jt">揪團留言</h3>
+
+        <div id="commandall">
+            <!--       留言重複開始         -->
+            <div class="command" v-for="msgRow in msgRows" :key="msgRow.MSG_NO">
+                <div class="nameall">
+                    <div class="mem_photo"><img class="mem_photo" :src="msgRow.MEM_IMG" alt=""></div>
+                    <span class="pub_mem_name">{{msgRow.MEM_NICNAME}}</span>
+                </div>
+                <div class="text_excl">
+                    <div class="command_text">
+                        <div class="pub_text">{{msgRow.MSG_CONTENT}}</div>
+                        <div class="com_pub_time">發表於{{msgRow.MSG_DATE}}</div>
+                    </div>
+                </div>
+            </div>
+            <!--       留言重複結束         -->
+            <div class="empty" v-show="msgRows.length==0">此揪團尚無留言，歡迎留言。</div>
+
+        </div>
+
+        <form>
+            <div class="input_container">
+                <h3>新增留言</h3>
+                <div class="create_command_container">
+                    <textarea id="content" class="create_command"></textarea>
+                    
+                        <div @click="sendComm" class="inner_btn" style="margin: 15px auto;">
+                            送出
+                        </div>
+                   
+                </div>
+            </div>
+
+        </form>
+
+    </main>
+
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+
+    <script src="./js/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                memRows:'',
+                showModal2: false,
+                dataRows:'',
+                dataTop:'',
+                joinRows:'', //此會員有參加的所有揪團
+                hotelRows:'',
+                foodRows:'',
+                msgRows:'',
+                loveRows:'', //找出這個會員收藏的所有揪團
+                savedLikes:'', //找此會員是否收藏過此揪團 
+                tour_id:'',
+                people_now:'',
+                people_limit:'',
+                targetPageId:'',
+                nowURL:'',
+                confirm_box: false,
+                good_box:false,
+                like_box: false
+            },
+            methods: {
+
+                //抓會員登入資料
+                getMem(){
+                    let xhr = new XMLHttpRequest();
+                    xhr.onload = function () {
+                        if(xhr.status == 200){ //success
+                            app.memRows = JSON.parse(xhr.responseText);
+                            // console.log(app.memRows);
+                        }else{
+                            alert(xhr.status);
+                        }
+                    };
+                    xhr.open("get", "./phps/member.php", true);
+                    xhr.send(null);
+                },
+
+                joinTour(TOUR_ID, NUM_OF_PARTICIPANTS, TOUR_PEOPLE){
+                    this.tour_id = TOUR_ID;
+                    this.people_now = NUM_OF_PARTICIPANTS;
+                    this.people_limit = TOUR_PEOPLE;
+
+                    if(this.memRows.length == 0){
+                        app2.lightbox = true
+                    }else{
+                        if(this.people_now == this.people_limit){
+                        alert('報名額滿囉!')
+                        console.log(this.people_now)
+                        console.log(this.people_limit)
+                    }else{
+                        if(this.dataTop[0].joined === "已報名"){
+                            alert('已經報名此團')
+                            return;
+                        }else{
+                            console.log("111")
+                            //跳確認報名燈箱
+                            this.confirm_box = true
+                        }
+
+                        // for(let i=0; i < this.joinRows.length; i++){
+                        //     if(this.joinRows[i].TOUR_ID == this.tour_id){
+                        //         alert('已經報名此團')
+                        //         return;
+                        //     }else{
+                        //     }
+                            
+                        // }
+                        
+                        
+                        }
+                    }
+
+                },
+
+                //寫入報名資料
+                realJoin(){
+                    let xhr = new XMLHttpRequest();
+                            xhr.onload = function(){
+                                if(xhr.status == 200){ //success
+                                    console.log('success')
+                                }else{
+                                    alert(xhr.status);
+                                }
+                            }
+                            xhr.open("post", "./phps/join_tour.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = "TOUR_ID=" + this.targetPageId;
+                            xhr.send(data_info);
+
+                            this.confirm_box = false
+                            this.good_box = true
+                            this.get_data()
+                },
+
+                checktype(data){
+                    if(data == 0){
+                        return "觀光型"
+                    }else{
+                        return "體驗型"
+
+                    }
+                },
+                checkLeader(data){
+                    if(data == 0){
+                        return "有"
+                    }else{
+                        return "沒有"
+                    }
+                },
+                get_data(){
+                    let nowURL = window.location.href;
+                    this.nowURL = nowURL;
+                    let searchURL = window.location.search;
+                    let targetPageId = searchURL.split("=")[1];
+                    this.targetPageId = targetPageId;
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.onload = function(){ 
+                    if(xhr.status == 200){
+                        app.dataRows = JSON.parse(xhr.responseText); 
+                        app.dataTop = app.dataRows[0];
+                        app.joinRows = app.dataRows[1];
+                        app.hotelRows = app.dataRows[2];
+                        app.foodRows = app.dataRows[3];
+                        app.msgRows = app.dataRows[4];
+
+                        app.loveRows = app.dataRows[5];
+                        let array = []
+                        for(let i =0 ; i < app.loveRows.length ; i++){
+                            array.push(app.loveRows[i].TOUR_ID)
+                        }
+                        app.loveRows = array
+
+                        app.savedLikes = app.dataRows[6];
+                        let array2 = []
+                        for(let i =0 ; i < app.savedLikes.length ; i++){
+                            array2.push(app.savedLikes[i].like_before)
+                        }
+                        app.savedLikes = array2
+
+                    }else{
+                        alert(xhr.status);
+                        }
+                    }
+                    xhr.open("post", "./phps/tour_more.php", true);
+                    xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                    let data_info = `TOUR_ID=${this.targetPageId}`;
+                    xhr.send(data_info);
+
+                    this.tour_id = targetPageId;
+                },
+
+                sendComm(){
+                    let words = document.getElementById("content")
+
+                    if(this.memRows.length == 0){
+                        app2.lightbox = true
+                    }else{
+                        if(words.value == ''){
+                        alert('尚未輸入內容')
+                    }else{
+                        let xhr = new XMLHttpRequest();
+                        xhr.onload = function(){
+                            if(xhr.status == 200){ //success
+                                console.log('success')
+                                // this.imageSource()
+                            }else{
+                                alert(xhr.status);
+                            }
+                        }
+                            xhr.open("post", "./phps/send_tour_msg.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = `TOUR_ID=${this.targetPageId}&MSG_CONTENT=${words.value}`;
+                            xhr.send(data_info);
+
+                            this.get_data()
+                            words.value = ''
+                        
+                        }
+                    }
+                   
+                },
+
+                
+
+                addFav(){
+
+                    if(this.memRows.length == 0){
+                        app2.lightbox = true
+                    }else{
+                        if(this.loveRows.indexOf(this.tour_id) != -1){
+                        // console.log("有加入過收藏")
+
+                            let xhr = new XMLHttpRequest();
+                            xhr.onload = function(){
+                                if(xhr.status == 200){ //success
+                                    console.log('移除收藏成功')
+                                }else{
+                                    // alert(xhr.status);
+                                }
+                            }
+                            xhr.open("post", "./phps/del_fav_tour.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = `TOUR_ID=${this.targetPageId}`;
+                            xhr.send(data_info);
+
+                            this.get_data()
+                            // alert('移除收藏成功')
+
+                    }else{
+                            
+                            let xhr = new XMLHttpRequest();
+                            xhr.onload = function(){
+                                if(xhr.status == 200){ //success
+                                    console.log('加入收藏成功')
+                                }else{
+                                    // alert(xhr.status);
+                                }
+                            }
+                            xhr.open("post", "./phps/add_fav_tour.php", false);
+                            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                            //送出資料
+                            let data_info = `TOUR_ID=${this.targetPageId}`;
+                            xhr.send(data_info);
+
+                            this.get_data()
+                            this.like_box = true
+                        }
+                    }
+                },
+
+            },
+
+            computed:{
+                //進揪團詳情頁時 判斷會員是否有收藏過此揪團(有收藏過就顯示實心)
+                // savedLikes == 1 代表此會員有收藏此揪團 imageSource就是true
+                //反之 代表此會員沒有收藏此揪團 imageSource就是false
+                imageSource(){
+                    if(this.savedLikes[0] == 1){ 
+                        return './images/common/like.png' //顯示實心
+                    }else{
+                        return './images/common/heart.png'
+                    }
+                },
+            },
+
+            mounted() {
+            //============去server端拿資料
+            this.get_data()
+            this.getMem()
+                
+            }
+
+        });
+    </script>
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v9.0" nonce="uIi17ONM"></script>
+
+</body>
+
+</html>

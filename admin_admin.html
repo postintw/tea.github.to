@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <title>偵茶者後台管理 | TEA SEARCHER | 帶你找茶 喝茶 買茶</title>
+        <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+        <link rel="stylesheet" href="./css/admin.css" />
+        <script src="js/admin.js"></script>
+    </head>
+    <body>
+        <nav class="nav">
+            <!-- logo放置區 -->
+            <a href="index.html">
+                <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+            </a>
+
+        </nav>
+        <aside class="aside">
+            <ul class="nav_list">
+                <a href="admin_tea.html"><h1>後台管理頁</h1></a>
+                
+
+                <li class="li">
+                    <a class="active"
+                    href="#"  data-target="admin"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />管理員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="member">
+                        <img class="navicon" src="images/common/nav_leaf.png" alt="" />會員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="tour"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />揪團活動管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="custom"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />客製化內容管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="shop"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />商城管理</a
+                    >
+                </li>
+
+                <li class="li">
+                    <a href="#" data-target="report"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />檢舉管理</a
+                    >
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main">
+            <div id="app">
+                <div class="tab_container -on admin">
+                    <div class="tab_list_block">
+                        <ul class="tab_list">
+                            <li><a href="#" data-target="tab1" class="tab -on">瀏覽管理員資料</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab_contents">
+                        <div class="tab tab1 -on">
+                            <form>
+                                <!-- <input type="text" v-model="add_no" placeholder="請輸入管理者編號" /> -->
+                                <input onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" type="text" v-model="add_name" placeholder="請輸入姓名(英、數字)" />
+                                <input onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" type="text" v-model="add_id" placeholder="請輸入帳號(英、數字)" />
+                                <input onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" type="text" v-model="add_psw" placeholder="請輸入密碼(英、數字)" />
+                                <button type="button" class="btn-confirm" @click="insert_admins">新增管理員</div>
+                                
+                            </form>
+                            <table>
+                                <tr>
+                                    <th>管理者編號#</th>
+                                    <th>管理者姓名</th>
+                                    <th>管理者帳號</th>
+                                    <th>管理者密碼</th>
+                                    <th>修改確認</th>
+                                </tr>
+                                <tbody v-for="item in admins">
+                                    <tr>
+                                        <td>{{item.ADMIN_NO}}</td>
+                                        <td>{{item.ADMIN_ID}}</td>
+                                        <td>{{item.ADMIN_NAME}}</td>
+                                        <td>****</td>
+                                        <td>
+                                            <button class="btn-delete" type="button" @click="delete_admins(item.ADMIN_NO)">刪除</button>
+                                           
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>                                                  
+                    </div>
+                     <!-- 燈箱 -->
+                     <lightbox v-if="lightbox_show" @close_lightbox="close_lightbox"> </lightbox>
+                    </div>
+            </div>
+        </main>
+        <!-- footer -->
+        <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+        <script src="./js/vue.js"></script>
+        <script src="js/admin_admin_vue.js"></script>
+    </body>
+</html>

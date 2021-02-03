@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <title>偵茶者後台管理 | TEA SEARCHER | 帶你找茶 喝茶 買茶</title>
+        <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+        <link rel="stylesheet" href="./css/admin.css" />
+        <script src="js/admin.js"></script>
+    </head>
+    <body>
+        <nav class="nav">
+            <!-- logo放置區 -->
+            <a href="index.html">
+                <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+            </a>
+        </nav>
+
+        <aside class="aside">
+            <ul class="nav_list">
+                <a href="admin_tea.html"><h1>後台管理頁</h1></a>
+
+                <li class="li">
+                    <a href="#" data-target="admin"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />管理員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="member">
+                        <img class="navicon" src="images/common/nav_leaf.png" alt="" />會員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="tour"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />揪團活動管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="custom"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />客製化內容管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="shop"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />商城管理</a
+                    >
+                </li>
+
+                <li class="li">
+                    <a class="active" href="#" data-target="report"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />檢舉管理</a
+                    >
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main">
+            <div id="app">
+                <div class="tab_container -on report">
+                    <div class="tab_list_block">
+                        <ul class="tab_list">
+                            <li><a href="#" data-target="tab1" class="tab -on">茶園留言的檢舉管理</a></li>
+                            <li><a href="#" data-target="tab2" class="tab -on">討論區留言管理</a></li>
+                            <li><a href="#" data-target="tab3" class="tab -on">討論區文章檢舉管理</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab_contents">
+                        <div class="tab tab1 -on">
+                            茶園留言的檢舉管理
+                            <form>
+                                <input
+                                    onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+                                    type="text"
+                                    v-model="gardMsgId"
+                                    placeholder="欲查詢請輸入檢舉編號"
+                                />
+                                <button id="g1" class="btn-confirm" type="button" @click="query_gardMsg_id">
+                                    送出查詢
+                                </button>
+                                <button class="btn-confirm" type="button" @click="get_gardens_MegReports">
+                                    回到列表
+                                </button>
+                            </form>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>檢舉編號</th>
+                                        <th>會員編號</th>
+                                        <th>留言編號</th>
+                                        <th>茶園留言檢舉時間</th>
+                                        <th>茶園留言檢舉原因</th>
+                                        <th>茶園留言檢舉內容</th>
+                                        <th>審核狀態</th>
+                                        <!-- <th>留言狀態</th> -->
+                                        <th>修改確認</th>
+                                    </tr>
+                                </thead>
+                                <tbody v-for="(item,key) in gardens_MegReports">
+                                    <tr>
+                                        <td>{{item.MSG_REP_NO}}</td>
+                                        <td>{{item.MEM_NO}}</td>
+                                        <td>{{item.MSG_NO}}</td>
+                                        <td>{{item.MSG_REP_DATE}}</td>
+                                        <td>{{item.MSG_REP_CONTENT}}</td>
+                                        <td>{{item.MSG_CONTENT}}</td>
+                                        <td>
+                                            <select
+                                                :value="item.MSG_REP_STATUS"
+                                                @change="change_GarMsgstatus($event,key)"
+                                            >
+                                                <option value="0">(0)未審核</option>
+                                                <option value="1">(1)審核通過</option>
+                                                <option value="2">(2)審核未通過</option>
+                                            </select>
+                                        </td>
+                                        <!-- <td>
+                                            <div class="form-group">
+                                                <label class="switch">
+                                                    <input type="checkbox" v-model="item.ischecked" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </td> -->
+                                        <td>
+                                            <input
+                                                type="button"
+                                                value="確認修改"
+                                                class="btn-delete"
+                                                @click="edit_gardens_Meg(item.MSG_REP_NO,key)"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab tab2">
+                            討論區留言管理
+                            <form>
+                                <input
+                                    onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+                                    type="text"
+                                    v-model="DissMsgId"
+                                    placeholder="欲查詢請輸入檢舉編號"
+                                />
+                                <button class="btn-confirm" type="button" @click="query_DissMsg_id">送出查詢</button>
+                                <button class="btn-confirm" type="button" @click="get_diss_MegReports">回到列表</button>
+                            </form>
+                            <table>
+                                <tr>
+                                    <th>留言檢舉編號</th>
+                                    <th>會員編號</th>
+                                    <th>文章留言編號</th>
+                                    <th>檢舉時間</th>
+                                    <th>檢舉原因</th>
+                                    <th>審核狀態</th>
+                                    <th>確認修改</th>
+                                </tr>
+
+                                <tbody v-for="(item,key) in diss_MegReports">
+                                    <tr>
+                                        <td>{{item.MSG_REP_NO}}</td>
+                                        <td>{{item.MEM_NO}}</td>
+                                        <td>{{item.MSG_NO}}</td>
+                                        <td>{{item.AMR_DATE}}</td>
+                                        <td>{{item.AMR_CONTENT}}</td>
+                                        <td>
+                                            <select :value="item.AMR_STATUS" @change="change_DisMegstatus($event,key)">
+                                                <option value="0">(0)未審核</option>
+                                                <option value="1">(1)審核通過</option>
+                                                <option value="2">(2)審核未通過</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="button"
+                                                class="btn-delete"
+                                                value="確認修改"
+                                                @click="edit_diss_Meg(item.MSG_REP_NO, item.MSG_NO,key)"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab tab3">
+                            討論區文章檢舉管理
+                            <form>
+                                <input
+                                    onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+                                    type="text"
+                                    v-model="DissArtId"
+                                    placeholder="欲查詢請輸入檢舉編號"
+                                />
+                                <button class="btn-confirm" type="button" @click="query_DissArt_id">送出查詢</button>
+                                <button class="btn-confirm" type="button" @click="get_diss_ArtReports">回到列表</button>
+                            </form>
+                            <table>
+                                <tr>
+                                    <th>文章檢舉編號</th>
+                                    <th>會員編號</th>
+                                    <th>文章編號</th>
+                                    <th>檢舉時間</th>
+                                    <th>檢舉原因</th>
+                                    <th>審核狀態</th>
+                                    <th>確認修改</th>
+                                </tr>
+
+                                <tbody v-for="(item,key) in diss_ArtReports">
+                                    <tr>
+                                        <td>{{item.REP_NO}}</td>
+                                        <td>{{item.MEM_NO}}</td>
+                                        <td>{{item.ART_NO}}</td>
+                                        <td>{{item.AR_DATE}}</td>
+                                        <td>{{item.AR_REASON}}</td>
+                                        <td>
+                                            <select :value="item.AR_STATUS" @change="change_DisArtStatus($event,key)">
+                                                <option value="0">(0)未審核</option>
+                                                <option value="1">(1)審核通過</option>
+                                                <option value="2">(2)審核未通過</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="button"
+                                                class="btn-delete"
+                                                value="確認修改"
+                                                @click="edit_diss_Art(item.REP_NO,key)"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 燈箱 -->
+                <lightbox v-if="lightbox_show" @close_lightbox="close_lightbox"> </lightbox>
+            </div>
+        </main>
+        <!-- footer -->
+        <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+
+        <script>
+            //tab
+            $(function () {
+                $('a.tab').on('click', function (e) {
+                    e.preventDefault()
+
+                    /* 將頁籤列表移除所有 -on，再將指定的加上 -on */
+                    $(this).closest('ul').find('a.tab').removeClass('-on')
+                    $(this).addClass('-on')
+
+                    /* 找到對應的頁籤內容，加上 -on 來顯示 */
+                    $('div.tab').removeClass('-on')
+                    $('div.tab.' + $(this).attr('data-target')).addClass('-on')
+                })
+            })
+        </script>
+        <script src="./js/vue.js"></script>
+        <script src="js/admin_report_vue.js"></script>
+    </body>
+</html>

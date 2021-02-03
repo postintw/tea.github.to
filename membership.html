@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+        <link rel="stylesheet" href="./css/membership.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+        <!-- <script src="./js/membership.js"></script> -->
+        <title>會員系統</title>
+    </head>
+
+    <body>
+        <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+        <div id="app">
+            <div class="banner">
+                <h1>會員中心</h1>
+                <!-- <h2>歡迎回來</h2> -->
+            </div>
+            <main>
+                <!-- 側邊欄 -->
+                <form class="side_col" action="./phps/upload_mem_icon.php" method="post" enctype="multipart/form-data">
+                    <div id="changeImg" class="card">
+                        <div class="card-body">
+                            <div class="profile-pic">
+                                <img
+                                    id="MEM_IMG"
+                                    class="rounded-circle"
+                                    :src="memRows.MEM_IMG"
+                                    @change="changeIcon($event)"
+                                />
+                            </div>
+                            <h2 id="MEM_NICKNAME">{{memRows.MEM_NICNAME}}</h2>
+                            <h6 id="MEM_ID" class="memId">@{{memRows.MEM_ID}}</h6>
+                            <!-- <input type="text" class="input-profile" name="profile" value="熱愛程式及茶園的男子"> -->
+                            <!-- <button id="mine_profile_btn" class="mine_profile" @click="content = 'mine_profile'">
+                                個人資料
+                            </button> -->
+                        </div>
+                    </div>
+                    <input type="file" id="profile_pic_input" name="profile_pic_input" accept="image/*" />
+                    <input type="submit" id="profile_pic_input_submit" value="確認更改頭像" />
+                </form>
+                <!-- 主要內容 -->
+                <div id="main_container">
+                    <!-- 主要內容的選單列 -->
+                    <div id="sub_menu">
+                        <h3 class="tour bg-color" @click="content = 'tour'">揪團管理</h3>
+                        <h3 class="mine_fav select-color" @click="content = 'mine_fav'">我的收藏</h3>
+                        <h3 class="mine_order select-color" @click="content = 'mine_order'">訂單查詢</h3>
+                        <h3 class="mine_article select-color" @click="content = 'mine_article'">我的文章</h3>
+                        <h3 class="mine_profile select-color" @click="content = 'mine_profile'">個人資料</h3>
+                    </div>
+                    <component :is="content"></component>
+                </div>
+            </main>
+
+            
+        </div>
+        
+        <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+        <!-- </div> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script> -->
+        <!-- <script src="./js/membership_vue.js"></script> -->
+
+        <!-- vue相關 -->
+        <script src="./js/membership_vue_test.js"></script>
+    </body>
+</html>

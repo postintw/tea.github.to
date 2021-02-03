@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>結帳</title>
+    <link rel="stylesheet" href="./vendors/slick-1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="./vendors/slick-1.8.1/slick/slick-theme.css">
+    <link rel="stylesheet" href="./css/check.css">
+
+    <script src="./js/product.js"></script>
+    <script src="./js/checkout.js"></script>
+</head>
+
+<body>
+    <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+    <div class="banner">
+    <h2 class="banner_t">結帳</h2>
+</div>
+    <form action="./04_checkout.html" id="checkForm">
+        <div class="main">
+            <div class="cart_content" id="cart_content">
+                <h3 class="partTitle">購買清單</h3>
+                <div id="amount">
+                    <span>小計：</span><input type="number" name="amount" id="totalAmount" readonly value="0" class="info">
+                </div>
+            </div>
+            <h3 class="partTitle">輸入基本資料</h3>
+
+            <div class="check_content">
+                <table class="delivery">
+                    <tr>
+                        <td>寄件方式:</td>
+                        <td>
+                            <select name="delivery" class="info">
+                                <option value="宅配">宅配</option>
+                                <option value="7-11店到店">7-11店到店</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>收件人:</td>
+                        <td><input type="text" name="reciever" required class="info" value="楊OO"></td>
+                    </tr>
+                    <tr>
+                        <td>收件地址:</td>
+                        <td><input type="text" name="address" required class="info" value="桃園市大友路"></td>
+                    </tr>
+                    <tr>
+                        <td>電話:</td>
+                        <td><input type="text" name="phone" required class="info" value="09123123123"></td>
+                    </tr>
+                    <tr>
+                        <td>付款方式:</td>
+                        <td>
+                            <select name="pay" id='pay' class="info">
+                                <option value="貨到付款">貨到付款</option>
+                                <option value="ATM付款">ATM付款</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id='atmAccount'>
+                        <td>付款帳號: </td>
+                        <td><input type="text" value='00020384751' readonly></td>
+                    </tr>
+                    <tr>
+                        <td>折抵金額:</td>
+                        <td style="position: relative;"> <input type="number" name="discount" id="discount" readonly
+                                value="0" class="info">
+                            <input type="button" value="使用優惠點數" id="usePoint">
+                            <table id='pointTable'>
+                                <tr>
+                                    <td>我的優惠點數:</td>
+                                    <td><input type="number" name="" id="myPoint" readonly value="2000"></td>
+                                </tr>
+                                <tr>
+                                    <td>使用優惠點數:</td>
+                                    <td><input type="text" name="" id="costPoint" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td>折抵費用:</td>
+                                    <td><input type="number" name="" id="discountprice" readonly value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <input type="button" value="取消" id="cancel">
+                                        <input type="button" value="確認折抵" id="usePointbtn">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" id="total" style="text-align: center;">
+                            <span>總計: </span><input type="number" name="total" id="totalBtn" readonly value="0">
+                        </td>
+                    </tr>
+                </table>
+                <input type="button" value="回上一步" class="back" onclick="location.href='javascript:history.go(-1);'">
+                <input type="submit" value="繼續結帳" id='getinfo'>
+            </div>
+        </div>
+    </form>
+    <div class="recommend">
+        <h2>推薦商品</h2>
+        <div class="recommend_products" id="recommends">
+        </div>
+    </div>
+    <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+</body>
+
+</html>

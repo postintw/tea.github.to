@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <title>偵茶者後台管理 | TEA SEARCHER | 帶你找茶 喝茶 買茶</title>
+        <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+        <link rel="stylesheet" href="./css/admin.css" />
+        <script src="js/admin.js"></script>
+    </head>
+    <body>
+        <nav class="nav">
+            <!-- logo放置區 -->
+            <a href="index.html">
+                <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+            </a>
+        </nav>
+
+        <aside class="aside">
+            <ul class="nav_list">
+                <a href="admin_tea.html"><h1>後台管理頁</h1></a>
+
+                <li class="li">
+                    <a href="#" data-target="admin"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />管理員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="member">
+                        <img class="navicon" src="images/common/nav_leaf.png" alt="" />會員管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" class="active" data-target="tour"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />揪團活動管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="custom"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />客製化內容管理</a
+                    >
+                </li>
+                <li class="li">
+                    <a href="#" data-target="shop"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />商城管理</a
+                    >
+                </li>
+
+                <li class="li">
+                    <a href="#" data-target="report"
+                        ><img class="navicon" src="images/common/nav_leaf.png" alt="" />檢舉管理</a
+                    >
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main">
+            <div id="app">
+                <div class="tab_container -on tour">
+                    <div class="tab_list_block">
+                        <ul class="tab_list">
+                            <li><a href="#" data-target="tab1" class="tab -on">活動查詢及上下架</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab_contents">
+                        <div class="tab tab1 -on">
+                            <form>
+                                <input type="text" v-model="tour_id_search" placeholder="請在此輸入揪團編號" />
+                                <button class="btn-confirm" type="button" @click="query_tour">查詢</button>
+                                <button class="btn-confirm" type="button" @click="get_tour">回到列表</button>
+                            </form>
+                            <table>
+                                揪團活動查詢及上下架
+                                <tr>
+                                    <th>揪團編號</th>
+                                    <th>揪團名稱</th>
+                                    <th>出團日期</th>
+                                    <th>截止日期</th>
+                                    <th>揪團上下架狀態</th>
+                                    <th>確認修改</th>
+                                </tr>
+                                <tbody v-for="(item,key) in tours">
+                                    <tr>
+                                        <td>{{item.TOUR_ID}}</td>
+                                        <td>{{item.TOUR_TITLE}}</td>
+                                        <td>{{item.TOUR_SETOFFTIME}}</td>
+                                        <td>{{item.DEADLINE_DATE}}</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <label class="switch">
+                                                    <input type="checkbox" v-model="item.ischecked" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <input
+                                                type="button"
+                                                class="btn-delete"
+                                                @click="edit_tours(item.TOUR_ID,key)"
+                                                value="確認修改"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 燈箱 -->
+                <lightbox v-if="lightbox_show" @close_lightbox="close_lightbox"> </lightbox>
+            </div>
+        </main>
+
+        <script>
+            //tab
+            $(function () {
+                $('a.tab').on('click', function (e) {
+                    e.preventDefault()
+
+                    /* 將頁籤列表移除所有 -on，再將指定的加上 -on */
+                    $(this).closest('ul').find('a.tab').removeClass('-on')
+                    $(this).addClass('-on')
+
+                    /* 找到對應的頁籤內容，加上 -on 來顯示 */
+                    $('div.tab').removeClass('-on')
+                    $('div.tab.' + $(this).attr('data-target')).addClass('-on')
+                })
+            })
+        </script>
+        <script src="./js/vue.js"></script>
+        <script src="js/admin_tour_vue.js"></script>
+    </body>
+</html>

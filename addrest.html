@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form action="./phps/addRest.php" method="post" enctype="multipart/form-data">
+        <input type="text" name="RESTAURANT_NAME" placeholder="餐廳名稱">
+        <input type="text" name="RESTAURANT_INFRO" placeholder="餐廳簡介">
+        <input type="text" name="RESTAURANT_STATUS" placeholder="上下架狀態(1:上架 2:下架)">
+        <input type="text" name="GARD_ID" placeholder="屬於哪一茶園編號">
+        上傳圖片:<input type="file" name="upFile">
+        <input type="submit" placeholder="新增">
+    </form>
+    <form action="./phps/addHotel.php" method="post" enctype="multipart/form-data">
+        <input type="text" name="HOTEL_NAME" placeholder="住宿名稱">
+        <input type="text" name="HOTEL_INFRO" placeholder="住宿簡介">
+        <input type="text" name="HOTEL_STATUS" placeholder="上下架狀態(1:上架 2:下架)">
+        <input type="text" name="GARD_ID" placeholder="屬於哪一茶園編號">
+        上傳圖片:<input type="file" name="upFile">
+        <input type="submit" placeholder="新增">
+    </form>
+</body>
+
+</html>

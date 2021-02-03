@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>茶園保衛戰</title>
+        <link rel="shortcut icon" href="./images/index/webIcon.png" type="image/x-icon" />
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script> -->
+        <script src="https://tibamef2e.com/ced101/project/g2/js/jquery-3.5.1.min.js"></script>
+        <link rel="stylesheet" href="./css/game.css" />
+        <link rel="stylesheet" href="./css/flex.css" />
+        <link rel="stylesheet" href="./css/game2.css">
+        <style>
+            #config{
+            cursor: pointer;
+            width:50px;
+            height:50px;
+            }
+            #sound{
+            -webkit-appearance: none;
+            width: 100px;
+            height: 7px;
+            outline : brown;
+            border:2px solid brown;      /* 避免點選會有藍線或虛線 */
+            background:rgb(121, 97, 61);
+        }
+        #sound::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            position: relative;    /* 設為相對位置，為了前後區塊的絕對位置而設定 */
+            width:10px;
+            height:10px;
+            background:#f22;
+            transition:.2s;        /* 點選放大時候的漸變時間 */
+        }
+        </style>
+    </head>
+    <body>
+        <nav id="nav">
+    <!-- v-for="memRow in memRows" -->
+    <!-- logo放置區 -->
+    <a href="./homepage.html">
+        <h1 id="logo"><img src="images/common/logo.png" alt="" /></h1>
+    </a>
+    <!-- 會員icon放置區 -->
+    <!-- <div class="mem_icon"> -->
+    <img class="memicon" @click="showLogin()" :src="memRows.MEM_IMG || './images/common/user.png'" />
+    <!-- </div> -->
+    <span id="spanLogin" @click="logout()"></span>
+
+    <!-- 購物車icon放置區 -->
+    <a href="./04_cart.html">
+        <img class="caricon" src="images/common/cart.png" alt="" />
+    </a>
+    <!-- 揪團去按鈕區 -->
+    <div class="go_tour" @click="addTourLogin()">揪團去</div>
+
+    <div class="menu-wrap">
+        <input type="checkbox" class="toggler" />
+        <div class="hamburger">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            <a class="underline" href="01_tour.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園揪團</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="02_vote.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />茶園排行</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="04_shopping.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />偵茶商城</a
+                            >
+                        </li>
+                        <li>
+                            <a class="underline" href="03_discuss.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />找茶討論</a
+                            >
+                        </li>
+                        <li class="nav_game">
+                            <a class="underline" href="06_game.html"
+                                ><img class="navicon" src="images/common/nav_leaf.png" alt="" />小遊戲</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <log_reg v-show="lightbox" @close="closeLoginBox()"></log_reg>
+</nav>
+
+        <div id="title" class="banner"><h1 class="banner-1st-title">小遊戲-茶園保衛戰</h1></div>
+        <div class="w100 flex j_c">
+            <div id="map" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+                <div class="tea_en flex a_c j_c" id="tea_en">
+                    <section style="overflow-x: hidden;position: relative;">
+                        <article class="flex">
+                            <div id="sliderBoard" class="flex">
+                                <div class="flex" id="teabar_content">
+                                    <component :is='ik'></component>
+                                </div>
+                            </div>
+                            
+                            <div  class="teatxt-bar y-flex a_end j_c" >
+                                <div id="teatxt-bar1">
+                                    <span>遊戲</span>
+                                </div>
+                                <div
+                                    id="teatxt-bar2"
+                                    style="height: 100px; width: 50px; position: relative; top: 30px"
+                                ></div>
+                            </div>
+                        </article>
+                        <div class="nav_ency flex j_sb a_c">
+                            <!--onclick="mover(800)" onclick="mover(-800)" -->
+                            <div id="tea_eprev" class="circle" @click="counter(-1)"></div>
+                            <div id="tea_enext" class="circle" @click="counter(1)"></div>
+                        </div>
+                        
+                    </section>
+                </div>
+                <div class="setpanel">
+                    <div class="absolute circle setpanel-x"  onclick="config()"></div>
+                    <div class="panelinner absolute" >
+                        <div>
+                            <label for="" class="white">遊戲音樂：<input type="range"class="rangecostom" max="1" min="0" step="0.01" value="1" id="volume" oninput="volume(this)"></label>
+                        </div>
+                        <div>
+                            <label for="" class="white">遊戲音效：<input type="range"class="rangecostom" max="1" min="0" step="0.01" value="1" id="sound" oninput="sou(this)"></label>
+                        </div>
+                        <div class="white flex">
+                            <p>子彈樣式：</p>
+                            <input type="radio" name="ball"value="https://tibamef2e.com/ced101/project/g2/images/game/6.gif" onclick="ballstyle(this)" id="greenball" checked>
+                            <input type="radio" name="ball"value="https://tibamef2e.com/ced101/project/g2/images/game/7.gif" onclick="ballstyle(this)" id="frieball">
+                            <input type="radio" name="ball"value="https://tibamef2e.com/ced101/project/g2/images/game/ShroomBullet.gif" onclick="ballstyle(this)" id="Shroomball">
+                            <input type="radio" name="ball"value="https://tibamef2e.com/ced101/project/g2/images/game/SnowPeashooterBullet.gif" onclick="ballstyle(this)" id="SnowPeaball">
+                        </div>
+                        <div>
+                            <p class="white">聯絡我們：postintw@gmail.com</p>
+                        </div>
+                        <div class="flex a_c j_c setpanel-x_y" onclick="config()">
+                            <span class="white">確定</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gameover bglightbox">
+                    <article>
+                        <div style="top: 107px; position: relative; font-size: 28px; left: 225px">
+                            <span >計分</span>
+                            <span id="score-over">0</span>
+                        </div>
+                        <div class="y-flex a_c" style="position: relative; top: 120px">
+                            <p style="font-size: 28px; color: red">蟲子跑進了茶園</p>
+                            <img src="https://tibamef2e.com/ced101/project/g2/images/game/200_d.gif" alt="" style="width: 300px" />
+                        </div>
+                        <div id="replay" class="flex a_c">
+                            <div id="innerplay" class="flex a_c j_c">
+                                <span>再玩一次</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="gamewin bglightbox">
+                    <article>
+                        <div class="y-flex a_c" style="position: relative; top: 225px">
+                            <img
+                                src="https://tibamef2e.com/ced101/project/g2/images/game/org.TeaGarden.kaiXinChaYuanWxy_Screenshot_2020.12.20_21.37.12.jpeg"
+                                style="width: 300px"
+                            />
+                            <span style="color: red; font-size: 28px; line-height: 1.5">恭喜您獲得採茶姑娘的青睞</span>
+                            <p style="position: relative; color: brown; font-size: 28px; line-height: 1.5">
+                                <span>得分：</span>
+                                <span id="score-win">0</span>
+                            </p>
+                        </div>
+                    </article>
+                </div>
+                <div class="overlay -on bglightbox">
+                    <article>
+                        <img src="https://tibamef2e.com/ced101/project/g2/images/game/game_role.png" class="title" />
+                        <div style="color: #fff; padding-left: 10px; font-size: 18px; border: solid 1px #fff">
+                            <p>遊戲說明：</p>
+                            <div >
+                                開場會有落下茶葉，玩家可以點擊接住茶葉<img class="h40px w40px"
+                                    src="https://tibamef2e.com/ced101/project/g2/images/game/leaf.gif"style="width: 40px; height: 40px"  />
+                            </div>
+                            <div class="flex">
+                                <span>落下的茶葉收到袋子裡→</span>
+                                <img src="https://tibamef2e.com/ced101/project/g2/images/game/62720191121071129866.png" alt=""style="width: 40px; height: 40px" />
+                                <span>用來購買守衛</span>
+                                <img class="h40px w40px" src="https://tibamef2e.com/ced101/project/g2/images/game/4.gif" alt="" style="width: 40px; height: 40px" />
+                            </div>
+                            <p>茶能量：守衛放置道路上需要能量，能量不足可是請不動守衛的呦。</p>
+                            <p>上方控制面板：暫停、繼續，茶百科可以瀏覽茶的知識、計分板顯示分數。</p>
+                            <p>右方：有蟲子向進攻，千萬不要放蟲子到茶園裡。</p>
+                        </div>
+                        <div class="button2 flex a_c j_c" id="go" style="appearance: none">
+                            <span style="color: #fff" id="gotxt">開始驅蟲</span>
+                        </div>
+                    </article>
+                </div>
+                <div id="way1" class="road"></div>
+                <div id="road"></div>
+                <div id="way2" class="road"></div>
+                <div id="way3" class="road"></div>
+                <ul id="props">                    
+                </ul>
+                <section id="botbar" class="flex">
+                    <div class="flex a_c j_c ho1">
+                       <img src="https://tibamef2e.com/ced101/project/g2/images/game/config.png" alt="" id="config">
+                       <div class="help">
+                        <p>遊戲設置：</p>
+                        <p>遊戲設置可以調整遊戲的音效、子彈的樣式，調整成你喜歡的樣子</p>
+                       </div>
+                    </div>
+                    <div class="pad10 y-flex a_c ho2">
+                        <span style="color: #000; font-size: 20px;white-space:nowrap;">計分</span>
+                        <span id="score">0</span>
+                        <div class="help">
+                            <p>記分板：</p>  
+                            <p>想透過遊戲換取折扣，請先登入後進行遊戲，結束後會算分數加到您的帳戶當中。</p>
+                       </div>
+                    </div>
+                    <div class="tea_ency">
+                        <div class="help">
+                            <p>茶百科：</p>
+                            <p>想知道茶的知識就來茶百科</p>
+                       </div>
+                    </div>
+                    <div class="star-back y-flex a_sb" style="line-height: 2">
+                        <div id="star-number">25</div>
+                        <br/>
+                        <div class="" style="color: #fff; position: relative; top: 10px">茶能量</div>
+                        <div class="help">
+                            <p>茶能量：</p>
+                            <p>當茶能量不足時，會請不動角色來保衛茶園，請接住落下的茶葉，茶能量就會增加</p>  
+                        </div>
+                    </div>
+                    <div class="ho3">
+                    <label for="checke">
+                        <input type="checkbox" class="checke" id="checkbox" value="pause" />
+                    </label>
+                        <div class="help">
+                            <p>暫停/繼續開關：</p>
+                            <p>我們可以暫停休息一下，之後繼續玩</p>  
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        
+        <footer>
+    <h5>®偵茶者TEA SEARCHER CORPORATION. ALL RIGHTS RESERVED2020</h5>
+    <h5 class="tibame">本網站為緯育TibaMe_前端設計工程師班第63期學員專題成果作品 - 參考資源</h5>
+    <div>
+        <a class="refer" href="https://www.dosuika.com/">土肥農園</a>
+        <a class="refer" href="https://www.ja-nagano.iijan.or.jp/">JAながの</a>
+        <a class="refer" href="https://www.all-toyota-gwp.jp/">TOYOTA</a>
+        <a class="refer" href="https://nakahora-bokujou.jp/">なかほら牧場</a>
+    </div>
+    <h5 class="nono" class="tibame"><a class="refer" href="https://tibamef2e.com">這裡</a>
+        為緯育TibaMe提供給[Web/APP前端設計工程師養成班]學員展示作品之平台</h5>
+    <h5 class="tibame">若有侵權疑慮，請私訊<a class="refer" href="https://www.facebook.com/webindex/">TibaMe-前端設計工程師養成班</a></h5>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="./vendors/slick-1.8.1/slick/slick.js"></script>
+<script src="./js/login_vue.js"></script>
+        <script>
+            Vue.component('slider1',{
+                template:`
+                <div class="flex">
+                <div class="teatxt">
+                    <p>概要：茶文化、茶葉知識、茶具知識、品茶用水、茶藝基礎、科學飲茶</p>
+                    <p>綠茶：綠茶簡介、黃山毛峰、洞庭碧螺春、西湖龍井、日照綠茶、太平猴魁</p>
+                    <p>紅茶：紅茶簡介、功夫紅茶、正山小種、祁門紅茶、金駿眉、大吉嶺茶</p>
+                    <p>黃茶：黃茶簡介、君山銀針</p>
+                    <p>白茶：白茶簡介、白毫銀針、白牡丹</p>
+                    <p>黑茶：黑茶簡介、普洱茶、安化黑茶</p>
+                    <p>烏龍茶：烏龍茶簡介、大紅袍、鳳凰單、凍頂烏龍、黃金桂、鐵觀音</p>
+                    <p>花茶：花茶簡介、茉莉花茶、玳玳花茶、白蘭花茶、珠蘭花茶</p>
+                    <img src="https://obs.line-scdn.net/0hPCP_VGkSD2xtJieVqBRwO1dwDANeShxvCRBeczJIUVgUHhxoWEdEWUF1BlxEQkgyAxdDA0giFF0TQxhuBkRE/w644" alt="">
+                </div>
+                <div class="teatxt">
+                    <h2>總綱：茶文化</h2>
+                    <p>中國用茶的淵源</p>
+                    <p>茶在中國的應用過程可以分為三個相承後的階段：藥用、食用、引用。三者之間有承先啟後的關係，但是三者又不可能進行絕對劃分，現在只要是以品飲為主，但同時又有茶的藥用和食用。在我國茶用早期，藥用和食用難於進行明確劃分，古人有"藥食同源"之說，可見不過相對而言，人們最早知識的還是藥用而已，因而不可將三者完全孤立開來看。</p>
+                    <p>藥用：中國古代有大量記載茶作為藥用的書籍。</p>
+                    <p>《神農本草》東漢華佗的《食論》，明代顧元慶的《茶譜》，唐代陸羽的《茶經》，李時珍的《本草綱目》，宋代吳淑的《茶賦》等都有茶葉功效的記載。                                        </p>
+                    <p>現在茶的藥用功能對中國少數民族而言更為突出，在少數民族地區，流傳著"寧可三日不吃糧，不可一日不喝茶"的諺語。這是因為像藏族、蒙古族、維吾爾族等小數民族因為都是居住在高寒地區，日常主食都是牛羊等肉類食品，不易消化，而茶的消脂去膩、促進消化功能對於他們而言，重要性不言而喻的了。</p>
+                </div>
+                </div>
+                `
+            });
+    Vue.component('slider2',{
+        template:`
+        <div class="flex">
+            <div class="teatxt">
+                <p>綠茶依照殺青工藝的不同可分為四種：炒青茶、蒸青茶、烘青茶、曬青茶。中國大陸與台灣在綠茶製作上以炒青為主；日本製作綠茶的方式則以蒸青為主。</p>
+                <p>炒青即將茶葉鮮葉在攝氏120度左右的鐵鍋中翻炒，使其水分散失、變得綿軟，以便做形。傳統工藝為徒手翻炒，來到現代為機械翻炒。綠茶沒有焙火工序，所以可以稱為生茶。 </p>
+                <h5>中國綠茶</h5>
+                <p>中國大陸大部分名茶為綠茶，如 產於杭州西湖的龍井、蘇州洞庭山碧螺春、秦嶺山脈北麓的紫陽富硒毛尖、漢中仙毫等。在清明之前、茶樹剛發芽時採摘的，稱為「明前茶」、「蓮心」、「銀針」；在穀雨前採摘的，為「雨前茶」，因茶葉已展開也稱為「旗槍」；在立夏前採摘的為「三春茶」，因已經有兩片葉展開也稱為「雀舌」；立夏後再採摘，葉片已變厚，為「四春茶」、「梗片」。</p>
+                <p>西湖龍井：中國綠茶的代表，浙江省杭州西湖周邊產，古代作為貢茶。特徵是扁平狀的炒青綠茶，帶綠的葉片， 帶有翡翠色的茶色，散發著草或豆的清香，甘甜。在清明節前後（4月5日左右）以一芯一葉方式摘取的，被視為最高級品。其中又以獅子峰的獅峰龍井被視為特級品。</p>
+                <p>黃山毛峰：安徽綠茶的代表，產於世界遺產黃山。特徵是帶黃白色毛的烘青綠茶，帶有透明黃金色的茶色，散發著栗子的氣味。以一芯二葉方式摘取的特級品被稱為「雀舌」。1955年被認定為中國十大名茶。</p>
+                <p>碧螺春：產於江蘇省蘇州市的東山及西山，尤以產於東山柑橘果園旁的被視為高級品。和龍井茶同為炒青綠茶，但其形狀是如捲貝般的螺旋狀，古代作為貢茶。春分到穀雨時期，以一芯一葉方式摘取的。</p>
+                <p>黃山綠牡丹：產於安徽省，清明節到穀雨期，用一芯一葉到一芯三葉的方式摘取葉片，再用線綁成牡丹花的形狀。加入熱水後，會如牡丹花般的優雅盛開，澀味少，持久的甘甜及清香。</p>
+                <p>山心毛尖茶與葵峰綠茶：產於廣西玉林市興業縣山心鎮，清明前後生產者為最佳，帶白毛的烘青綠茶，帶有透明黃金色的茶色，入口芬芳，瀰漫著淡淡的茶香，沁人心脾。</p>
+            </div>
+            <div class="teatxt">
+                <h5>紅茶好處多</h5>
+                <p>紅茶是經過發酵烘製而成的，發酵時茶葉在氧化酶的作用下變成紅色氧化物，成為紅茶。紅茶品性溫和，味道醇厚，除含多種水溶性維生素外，還富含微量元素鉀，當沖泡後70%的鉀可溶於茶水內。鉀有增強心臟血液循環的作用，並能減少鈣在體內的消耗。因紅茶中所含的錳是骨結構不可缺少的元素之一，因而常喝紅茶對骨骼強健也有益處。 國外有資料報道，經常飲紅茶還有防治流感、中風及皮膚癌的效果。 研究表明，由於紅茶中含有一種類黃酮化合物，其作用類似於抗氧化劑，能防止中風和心臟病。美國一項最新研究顯示：每天喝一杯紅茶的人與不喝茶的相比，前者罹患心臟病的風險要比後者低40%以上 。</p>
+                <p>紅茶可以幫助胃腸消化、促進食慾，可利尿、消除水腫，並強壯心臟功能。 預防疾病方面：紅茶的抗菌力強，用紅茶漱口可防濾過性病毒引起的感冒，並預防蛀牙與食物中毒，降低血糖值與高血壓。 美研究發現紅茶漱口可防蛀牙</p>
+                <h5>喝紅茶好處多 改善血管功能助健康</h5>
+                <p>喝紅茶有助於預防心血管疾病、中風和癌症等致命疾病，可能不是新聞，不過一項最新的研究終於發現，紅茶能改善人體的血管功能，對健康有明顯助益。</p>
+                <p>紅茶在世界各地是非常普遍的飲料，而研究也發現，喝紅茶有助於減緩冠狀動脈疾病的病情，並減少中風及罹患某些癌症的機率，不過一直到最近，一項最新的研究才發現，紅茶如何在我們的體內發揮作用。</p>
+                <p>這項研究追蹤了50名心臟病患者，他們在一個月內，除了喝白開水外，每天還喝4杯紅茶，結果發現血管功能有明顯的改善，這和控制血流、並預防血液凝塊的內皮細胞有密切關連，然而醫師也指出，這並不代表紅茶能夠取代藥物。</p>
+                <p>根據過去的研究發現，葡萄、蘋果、洋蔥和紅茶等類黃酮含量高的飲食，有助於預防中風和心臟病，當然生活習慣，也要跟著改變，包括戒菸、控制體重、飲酒適量、多吃蔬菜水果和低脂的食物等等。</p>
+            </div>
+        </div>    
+        `
+    });
+    Vue.component('slider3',{
+        template:`
+        <div class="flex">
+            <div class="teatxt">
+                <h5>黃茶</h5>
+                <p>黃茶是中國特產，湖南嶽陽為中國黃茶之鄉，其餘產茶國無商業化生產。黃茶的品質特點是“黃葉黃湯”， 其按鮮葉老嫩芽葉大小又分為黃芽茶、黃小茶和黃大茶。黃芽茶主要有君山銀針、蒙頂黃芽和霍山黃芽。</p>
+                <p>黃茶分為黃芽茶、黃小茶和黃大茶三類。</p>
+                <p>黃大茶：如安徽的霍山黃大茶（中國地理標誌產品）、廣東的大葉青等。</p>
+                <p>黃小茶：如湖南寧鄉的溈山毛尖、湖南嶽陽的北港毛尖、湖北的遠安鹿苑、浙江的平陽黃湯等。</p>
+                <p>黃芽茶：如湖南岳陽的君山銀針、四川名山的蒙頂黃芽、安徽霍山的霍山黃芽、浙江德清的莫干黃芽等。</p>
+                <p>製作流程</p>
+                <p>殺菁-悶黃-揉捻-乾燥，黃茶屬輕發酵茶類，加工工藝近似綠茶，只是在乾燥過程的前或後，增加一道“悶黃”的工藝，其中以黃宣紙為正統悶黃手法，促使其多酚葉綠素等物質部份非酶性氧化。</p>
+            </div>
+            <div class="teatxt">
+                <h5>白茶</h5>
+                <p>白茶是指一種採摘後，不經過殺青或揉捻，只經過日曬或文火乾燥後所製成的茶葉。白茶白毫顯露。比較出名的出自福建東北部地區，有白毫銀針、白牡丹、貢眉、壽眉等不同等級的白茶。</p>
+                <p>白茶的名字最早出現在唐朝陸羽的《茶經》七之事中，其記載:「永嘉縣東三百里有白茶山。」陳櫞教授在《茶葉通史》中指出:「永嘉東三百里是海，是南三百里之誤。南三百里為福建省福鼎（唐為長溪縣轄區），系白茶原產地。」可見唐代長溪縣已培育出「白茶」品種。因其僅有名稱，能否作為起源證據還有待進一步商榷。</p>
+                <p>宋朝製茶「朝採即蒸」、「即蒸即焙」，不經萎凋和發酵，只有綠茶。《大觀茶論》所載「白茶」為全國僅六株的特殊茶樹，非今日之白茶。</p>
+                <p>有的學者認為白茶始於神農嘗百草時期，湖南農學院的楊文輝先生就持此觀點。他發表的《關於白茶起源時期的商榷》一文中提出白茶的出現早於綠茶。</p>
+                <p>白茶的原材料均多采自福鼎大白茶、福鼎大毫茶、福安大白茶等品種。若采單芽按白茶製作工藝製成的茶稱為白芽茶，如白毫銀針；若采一芽葉、一芽二葉按白茶製作工藝製成的茶稱為白葉茶，如白牡丹、貢眉等。</p>
+            </div>
+        </div>
+        `
+    });
+    Vue.component('slider4',{
+        template:`
+<div class="flex">
+    <div class="teatxt">
+        <h5>黑茶</h5>
+        <p>黑茶，一種中國茶，陳放茶葉數個月或數年，讓其中的麴菌發酵後製成，泡出的茶湯顏色呈黑褐色且混濁，並因此得名。生產歷史非常悠久，已有四百年歷史，最早的黑茶是由毛茶阿薩姆而成。中國的黑茶以雲南最為出名。而雲南普洱茶的前身就是阿薩姆所謂黑茶。</p>
+        <p>湖南黑茶（安化黑茶）類：黑磚茶、茯磚茶、花磚茶、千兩茶類、天尖、貢尖、生尖茶等</p>
+        <p>湖北黑茶類：緊壓型青磚茶、散裝青磚茶</p>
+        <p>廣西六堡茶類：緊壓六堡茶、散裝六堡茶</p>
+        <p>雲南普洱茶類：普洱茶類中的熟茶（包括緊壓餅類和散茶類熟茶）</p>
+        <p>四川邊茶（藏茶）類：金尖、康磚等。</p>
+    </div>
+    <div class="teatxt">
+        <h5>台灣烏龍茶</h5>
+        <p>臺灣烏龍茶又稱半球型包種茶，產於臺灣的烏龍茶，屬於青茶的一種。以南投鹿谷地區所產的凍頂烏龍茶起源最早。與中國大陸的分類方法不同，在臺灣，烏龍茶專指用「烏龍茶種、並以烏龍茶方式加工」的茶種。</p>
+        <p>臺灣烏龍茶以輕度發酵、團揉方式製成，外型呈現捲曲的球狀。茶湯呈金黃色，味道醇厚，有強烈果實香。</p>
+        <p>臺灣烏龍茶種，來自福建安溪，在南投鹿谷地區培育而成。製作烏龍茶必須使用青心烏龍、大有烏龍、大葉烏龍等品種，始被認同為正統烏龍茶。臺灣也有使用金萱、翠玉、四季春或其他品種，來製作烏龍茶，這些皆被視為新近研發的茶類，有別於正統的烏龍茶。</p>
+        <p>臺灣烏龍茶大致指輕或中度發酵、輕焙火、揉捻成半球狀的品種。臺灣烏龍茶與中國大陸青茶迥異之處，尚有一重點是中國大陸青茶在凋萎後還以搖青、作青程序補充初步發酵，臺灣則通常在萎凋後即進行炒青，炒青是一道兼具促進發酵與停止發酵的細緻手工，成敗全憑炒茶師父的經驗與天時地利人和。</p>
+        <p>臺灣種植的茶種，都屬於烏龍茶種，可以製成烏龍茶。在清朝時，臺灣製作及外銷的烏龍茶，都屬於重發酵。在日治時期，日本人請來福建製茶師傅，在臺灣改良了製程及口味，現今臺灣烏龍茶都屬於輕發酵或半發酵，在發酵過程中，進行炒青，以停止發酵過程。之後又經過揉、搖等手法，使茶葉呈現捲曲狀。</p>
+        <p>種類：</p>
+        <p>凍頂烏龍茶</p>
+        <p>凍頂烏龍茶是生產於南投縣鹿谷鄉的烏龍茶，早期發源地是鳳凰村、永隆村、彰雅村，之後逐漸發展到廣興村、內湖村、和雅村、初鄉村、羊灣村等地，茶區大多分布在海拔600至1200公尺的山坡地上。茶葉採摘自茶樹頂端的嫩葉，茶樹的品種有青心烏龍、武夷種、四季春、台茶12號、台茶13號，屬於重度半發酵茶；與文山包種茶、東方美人茶、松柏長青茶、木柵鐵觀音、三峽龍井茶、阿里山珠露茶、臺灣高山茶、龍泉茶和日月潭紅茶併稱為「臺灣十大名茶」，因為在臺灣茶市場中時常處於領先地位也被稱為「臺灣茶中之聖」。</p>
+        <h5>高山烏龍茶</h5>
+        <p>在臺灣，種植於海拔1000公尺以上山區的烏龍茶，稱為高山烏龍茶。從1980年代臺灣茶葉內銷市場日益活躍以來，臺灣烏龍茶的種植海拔越來越高，這些海拔在1000公尺以上的高山茶，在製作上與傳統烏龍茶製作，又有不同；一般傾向輕發酵輕焙火，強調保留較多茶葉的原始茶香，並留住更豐富的物質、口感，具有茶葉本身輕花香的特質。由於高山茶價格好，所以臺灣烏龍茶的製作日漸傾向高山茶的輕發酵輕焙火，捨棄傳統中發酵中焙火、重「果香」的特色。</p>
+        <p>根據估計，茶的全球產量超過二百五十萬噸，其中百分之九十是全發酵的紅茶，百分之八是不發酵的綠茶，百分之二為「半發酵」的烏龍茶。</p>
+        <p>白毫烏龍茶</p>
+        <p>東方美人茶，又名膨風茶、椪風茶、福壽茶、舊稱番莊烏龍，客家人亦稱其為冰風茶、煙風茶或稱為蜒仔茶，又因其茶芽白毫顯著，又名為白毫烏龍茶。是部分發酵烏龍茶中，發酵程度較重的茶品。臺灣茶葉改良場公布的發酵度為60%，新竹、苗栗地區茶農所製的發酵度則多達75－85%，使兒茶素幾乎一半以上半氧化，故不會產生任何「生菁臭」、「臭菁味」，且不苦不澀。主要產地在台灣的新竹、苗栗一帶。適合製作東方美人茶的茶種有「青心大有」、「青心烏龍」、「白毛猴」、「慢種」、「台茶12號」、「台茶15號」、「台茶17號」，其中以「青心大冇」品質最佳。如今，東方美人茶的採收必須在炎夏六、七月，農曆芒種至大暑間，即端午節前後10天，茶樹嫩芽經茶小綠葉蟬（小綠浮塵子）吸食後長成之茶芽，稱為「著涎」的茶菁，茶葉品質的好壞決定在「著涎」的程度。經手工採摘一心二葉，再以傳統技術精製而成高級烏龍茶，製茶過程的特點是：炒菁後，需多一道以布包裹，置入竹簍或鐵桶內的「靜置回潤」或稱「回軟」的二度發酵程序，再進行揉捻、解塊、烘乾而製成毛茶。再經分級、精製焙火、包裝。茶葉白毫肥大，葉身呈白、綠、黃、紅、褐五色相間，有濃濃的蜂蜜香、熟果味，西方飲茶人士譽之為東方美人（Oriental Beauty）。</p>
+        <p>紅烏龍</p>
+        <p>紅烏龍，台灣烏龍茶的一種，主要生產於台灣台東縣。紅烏龍屬於發酵程度較重（80%-90%）之烏龍茶，因茶湯呈現橙紅水色，色澤如紅茶，但口感仍然保持烏龍茶風味，故名紅烏龍。由中華民國農委會所屬茶業改良場台東分場研發，最早種植與製作地區在台灣台東縣鹿野鄉，於2008年後上市。</p>
+        <p>紅烏龍的原料，來自中低海拔茶區種植的烏龍茶種，以大葉烏龍為主，在夏秋採收茶菁。不像凍頂烏龍茶只採用一心二葉部位，需要人工採收，紅烏龍使用全株茶葉製造，因此可以用機器採收。紅烏龍與一般烏龍茶相較，主要的差異點在於發酵法的不同，是現有烏龍茶中，發酵程度最重者。福鹿茶區原有種植大葉種阿薩姆紅茶的經驗，紅烏龍借鑒了紅茶的發酵法，但仍然保留了烏龍茶的炒青作法。</p>
+    </div>
+</div>
+        `
+    });
+Vue.component('slider5',{
+    template:`
+    <div class="flex">
+        <div class="teatxt">
+            <a href="https://www.wistariateahouse.com/mainssl/modules/MySpace/index.php?xmlid=62087">
+                <img src="https://scontent.ftpe8-2.fna.fbcdn.net/v/t1.0-9/p960x960/35160633_999516486883196_1820152134398640128_o.jpg?_nc_cat=103&ccb=2&_nc_sid=8024bb&_nc_ohc=d9zP7XnkXL0AX9W0VdL&_nc_ht=scontent.ftpe8-2.fna&tp=6&oh=f23c4a5cad148638b81ae7b01e1f5771&oe=603260AB" alt="偵茶事務所">
+            </a>                                        
+        </div>
+        <div class="teatxt">
+            <img src="https://scontent.ftpe8-4.fna.fbcdn.net/v/t1.0-9/s960x960/60236251_2161192100663400_4886475968736133120_o.jpg?_nc_cat=102&ccb=2&_nc_sid=8024bb&_nc_ohc=a0G7FedgxbIAX_VTDtq&_nc_ht=scontent.ftpe8-4.fna&tp=7&oh=d446cea6a361b85a73d2c075e1960414&oe=6031AE68" alt="台灣茶產區分布圖">
+        </div>
+    </div>
+    `
+})    
+var vma=new Vue({
+el:'#tea_en',
+data:{
+    com:['slider1','slider2','slider3','slider4','slider5'],
+    index:0,
+    ik:'slider1'
+},methods:{
+    counter(n){
+        console.log(this.com[0]);
+        if(0>(this.index + n)){
+            alert('已經第一頁');
+        }else if(4<(this.index + n)){
+            alert('已經最後一頁');
+        }else{
+            this.index += n;
+            var g=this.index
+            this.ik=this.com[g];
+            console.log(this.ik);
+            
+        }
+    }
+}
+})
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+        <script src="./js/game (1).js"></script>
+        <script src="./js/game2.js"></script>
+        <script src="./js/game3.js"></script>
+     <!-- 目標：vue cli 高端vue -->
+       <script>
+            var data=[{IMG:"https://tibamef2e.com/ced101/project/g2/images/game/4.gif",DATA_STAR:25,DATA_HPS:50,DATA_HP:50,DATA_DEFENSE:20,DATA_DAMAGE:10,DATA_SPEED:2},
+            {IMG:"https://tibamef2e.com/ced101/project/g2/images/game/Wallnut_body.png",DATA_STAR:50,DATA_HPS:100,DATA_HP:100,DATA_DEFENSE:90,DATA_DAMAGE:0,DATA_SPEED:0},
+            {IMG:"https://tibamef2e.com/ced101/project/g2/images/game/TallNut.gif",DATA_STAR:75,DATA_HPS:150,DATA_HP:150,DATA_DEFENSE:90,DATA_DAMAGE:0,DATA_SPEED:0},];
+				for(let i of data){
+                var li=document.createElement("li");
+				li.innerHTML=`<img src="${i.IMG}" data-star="${i.DATA_STAR}" data-hps="${i.DATA_HPS}" data-hp="${i.DATA_HP}" data-defense="${i.DATA_DEFENSE}" data-damage="${i.DATA_DAMAGE}" data-speed="${i.DATA_SPEED}" class="plant" />
+				<span>${i.DATA_STAR}</span>`;
+				document.getElementById('props').appendChild(li);
+                }
+            //https://tibamef2e.com/ced101/project/g2/images/game/tanktea.gif
+            // https://tibamef2e.com/ced101/project/g2/images/game/4.gif
+            //    axios.get("./phps/getROLE.php").then(function(response){
+            //     let data=response.data;var props=$('#props');
+			// 	for(let i of data){
+            //     var li=document.createElement("li");
+			// 	li.innerHTML=`<img src="${i.IMG}" data-star="${i.DATA_STAR}" data-hps="${i.DATA_HPS}" data-hp="${i.DATA_HP}" data-defense="${i.DATA_DEFENSE}" data-damage="${i.DATA_DAMAGE}" data-speed="${i.DATA_SPEED}" class="plant" />
+			// 	<span>${i.DATA_STAR}</span>`;
+			// 	document.getElementById('props').appendChild(li);
+			//     }
+            //    }).catch(function(){
+            //     var li=document.createElement("li");
+			// 	li.innerHTML=`<img src="./images/game/4.gif" data-star="25" data-hps="50" data-hp="${50}" data-defense="${20}" data-damage="${10}" data-speed="${2}" class="plant" />
+			// 	<span>25</span>`;
+            //     document.getElementById('props').appendChild(li);
+            //    });         
+               function sou(vol) {
+                bomb.volume = vol.value;
+                }
+                
+        </script>
+        <script>
+            // var a=new Vue({
+            //     el='#send1',
+            //     data:{
+            //         memid:"",
+            //         memscore:0
+            //     },watch:{
+            //         memsend:{
+            //             handler:function(){
+            //                 if(this.memid!=""){
+            //                     if(this.memscore!=0){
+            //                         var xhr=new XMLHttpRequest();
+            //                         xhr.open("GET","./phps/member_out.php");
+            //                         xhr.send(`mem_no=${document.getElementsByName('mem_no')[0]}&score=${document.getElementsByName('score')[0]}`)
+            //                         xhr.onload=function(){}
+            //                         document.getElementById("mem_no").value="";
+            //                         document.getElementsById("_score").value=0;
+            //                     }
+            //                 }
+            //             },immediate=true,
+            //         }
+            //     },
+            //     mothods:{
+            //         mem(){
+            //             axios.get("./phps/game_point.php").then(response){
+            //                 document.getElementsById('mem_no').value=response.data.MEM_NO;
+            //                 document.getElementsById("score_tmp").value=response.data.GAME_POINT;
+            //             }
+            //         }
+            //     },
+            // mounted() {
+            //     mem();
+
+            // },
+            // updated(){
+            //     mem();
+            // }
+            // });
+                            
+        </script>
+    </body>
+</html>
